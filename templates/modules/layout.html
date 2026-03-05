@@ -214,12 +214,25 @@
 
   <th:block th:replace="~{modules/footer}"></th:block>
 
-  <th:block th:if="${theme.config.music != null && theme.config.music.enabled && theme.config.music.playlistId != null && !#strings.isEmpty(theme.config.music.playlistId)}">
+  <th:block th:if="${theme.config.music != null && theme.config.music.enabled && ((!#strings.isEmpty(theme.config.music.playlistId)) || (!#strings.isEmpty(theme.config.music.metingApi)))}">
   <link rel="stylesheet" th:href="@{/assets/css/APlayer.min.css}" />
   <link rel="stylesheet" th:href="@{/assets/css/music-panel.css}" />
-  <div id="nav-music" th:attr="data-autoplay=${theme.config.music.autoPlay != null && theme.config.music.autoPlay ? 'true' : 'false'}">
+  <div id="nav-music" 
+       th:attr="data-autoplay=${theme.config.music.autoPlay != null && theme.config.music.autoPlay ? 'true' : 'false'},
+                data-meting-api=${theme.config.music.metingApi},
+                data-playlist-id=${theme.config.music.playlistId}">
     <a id="nav-music-hoverTips" class="nav-music-tips">播放音乐</a>
     <meting-js
+      th:if="${!#strings.isEmpty(theme.config.music.metingApi)}"
+      th:attr="api=${theme.config.music.metingApi}"
+      type="playlist"
+      mutex="true"
+      preload="auto"
+      data-lrctype="0"
+      order="random">
+    </meting-js>
+    <meting-js
+      th:if="${#strings.isEmpty(theme.config.music.metingApi)}"
       th:id="${theme.config.music.playlistId}"
       server="netease"
       type="playlist"
@@ -262,7 +275,17 @@
       <!-- 控制按钮 -->
       <div class="mp-controls">
         <button class="mp-btn mp-btn-mode" id="mpMode" title="播放模式">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+          <!-- 列表顺序图标 -->
+          <svg class="mp-icon-order" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/>
+            <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+          </svg>
+          <!-- 随机播放图标 -->
+          <svg class="mp-icon-random" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+            <polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/>
+            <polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/>
+            <line x1="4" y1="4" x2="9" y2="9"/><line x1="9" y1="4" x2="4" y2="9"/>
+          </svg>
         </button>
         <button class="mp-btn mp-btn-prev" id="mpPrev" title="上一首">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
@@ -275,7 +298,23 @@
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
         </button>
         <button class="mp-btn mp-btn-loop" id="mpLoop" title="循环模式">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          <!-- 列表循环图标 -->
+          <svg class="mp-icon-loop-all" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+            <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+          </svg>
+          <!-- 单曲循环图标 -->
+          <svg class="mp-icon-loop-one" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+            <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+            <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+            <text x="12" y="14" font-size="7" fill="currentColor" stroke="none" text-anchor="middle" font-weight="bold">1</text>
+          </svg>
+          <!-- 关闭循环图标 (带删除线) -->
+          <svg class="mp-icon-loop-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+            <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+            <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+            <line x1="1" y1="1" x2="23" y2="23" stroke-width="2.5"/>
+          </svg>
         </button>
       </div>
       <!-- 底部：音量 + 收起 -->
@@ -343,7 +382,7 @@
     resizeObs.observe(el);
 
     function getAccentColor() {
-      return getComputedStyle(document.documentElement).getPropertyValue('--color-accent').trim() || '#F596AA';
+      return getComputedStyle(document.documentElement).getPropertyValue('--color-accent').trim() || '#c084fc';
     }
 
     function applyThemeColor(inst) {
@@ -465,40 +504,66 @@
 
     function bindPanelEvents() {
 
-      document.getElementById('mpPlay').addEventListener('click', function() {
+      document.getElementById('mpPlay').addEventListener('click', function(e) {
+        e.stopPropagation();
         if (!ap.audio.paused) pauseFromPanel = true;
         ap.toggle();
       });
 
-      document.getElementById('mpPrev').addEventListener('click', function() {
+      document.getElementById('mpPrev').addEventListener('click', function(e) {
+        e.stopPropagation();
         ap.skipBack();
         setTimeout(function() { syncPanelState(); renderPlaylist(); }, 300);
       });
 
-      document.getElementById('mpNext').addEventListener('click', function() {
+      document.getElementById('mpNext').addEventListener('click', function(e) {
+        e.stopPropagation();
         ap.skipForward();
         setTimeout(function() { syncPanelState(); renderPlaylist(); }, 300);
       });
 
       var modeBtn = document.getElementById('mpMode');
-      modeBtn.addEventListener('click', function() {
+      modeBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
 
+        // 直接切换 APlayer 的顺序模式
         var cur = ap.options.order;
         var next = cur === 'random' ? 'list' : 'random';
-
+        ap.options.order = next;
+        
+        // 手动触发 APlayer 内部更新（不调用 click 避免关闭面板）
         var orderBtn = el.querySelector('.aplayer-icon-order');
-        if (orderBtn) orderBtn.click();
+        if (orderBtn) {
+          orderBtn.classList.toggle('aplayer-icon-order', next === 'list');
+          orderBtn.classList.toggle('aplayer-icon-random', next === 'random');
+        }
+        
         updateModeIcons();
       });
 
       var loopBtn = document.getElementById('mpLoop');
-      loopBtn.addEventListener('click', function() {
+      loopBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        
+        // 直接切换 APlayer 的循环模式
+        var cur = ap.options.loop;
+        var next = cur === 'all' ? 'one' : (cur === 'one' ? 'none' : 'all');
+        ap.options.loop = next;
+        
+        // 手动触发 APlayer 内部更新（不调用 click 避免关闭面板）
         var loopIcon = el.querySelector('.aplayer-icon-loop');
-        if (loopIcon) loopIcon.click();
+        if (loopIcon) {
+          loopIcon.classList.remove('aplayer-icon-loop', 'aplayer-icon-loop-once', 'aplayer-icon-loop-none');
+          if (next === 'all') loopIcon.classList.add('aplayer-icon-loop');
+          else if (next === 'one') loopIcon.classList.add('aplayer-icon-loop-once');
+          else loopIcon.classList.add('aplayer-icon-loop-none');
+        }
         updateModeIcons();
       });
 
-      document.getElementById('mpListToggle').addEventListener('click', function() {
+      document.getElementById('mpListToggle').addEventListener('click', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
         var listArea = document.getElementById('mpListArea');
         var btn = document.getElementById('mpListToggle');
         if (listArea.style.display === 'none') {
@@ -513,6 +578,7 @@
 
       var progressBar = document.getElementById('mpProgress');
       progressBar.addEventListener('click', function(e) {
+        e.stopPropagation();
         var rect = progressBar.getBoundingClientRect();
         var pct = (e.clientX - rect.left) / rect.width;
         pct = Math.max(0, Math.min(1, pct));
@@ -523,6 +589,7 @@
 
       var volBar = document.getElementById('mpVolumeBar');
       volBar.addEventListener('click', function(e) {
+        e.stopPropagation();
         var rect = volBar.getBoundingClientRect();
         var pct = (e.clientX - rect.left) / rect.width;
         pct = Math.max(0, Math.min(1, pct));
@@ -531,7 +598,8 @@
       });
 
       var savedVol = 0.7;
-      document.getElementById('mpVolBtn').addEventListener('click', function() {
+      document.getElementById('mpVolBtn').addEventListener('click', function(e) {
+        e.stopPropagation();
         if (ap.audio.volume > 0) {
           savedVol = ap.audio.volume;
           ap.volume(0);
@@ -544,19 +612,45 @@
     }
 
     function updateModeIcons() {
+      if (!ap) return;
       setTimeout(function() {
         var modeBtn = document.getElementById('mpMode');
         var loopBtn = document.getElementById('mpLoop');
 
-        var orderIcon = el.querySelector('.aplayer-icon-order');
-        var loopIcon = el.querySelector('.aplayer-icon-loop');
-        if (orderIcon) {
-          var isRandom = orderIcon.querySelector('path') && 
-            orderIcon.innerHTML.indexOf('random') > -1;
-          modeBtn.classList.toggle('active', true);
-        }
-        if (loopIcon) {
-          loopBtn.classList.toggle('active', true);
+        // 获取 APlayer 的播放顺序模式: 'list' 或 'random'
+        var order = ap.options && ap.options.order ? ap.options.order : 'list';
+        var isRandom = order === 'random';
+        modeBtn.classList.toggle('active', isRandom);
+        modeBtn.title = isRandom ? '随机播放' : '列表顺序';
+        // 切换模式图标显示
+        var orderIcon = modeBtn.querySelector('.mp-icon-order');
+        var randomIcon = modeBtn.querySelector('.mp-icon-random');
+        if (orderIcon) orderIcon.style.display = isRandom ? 'none' : '';
+        if (randomIcon) randomIcon.style.display = isRandom ? '' : 'none';
+
+        // 获取 APlayer 的循环模式: 'all', 'one', 'none'
+        var loop = ap.options && ap.options.loop ? ap.options.loop : 'all';
+        var isLooping = loop !== 'none';
+        loopBtn.classList.toggle('active', isLooping);
+        // 切换循环图标显示
+        var loopAllIcon = loopBtn.querySelector('.mp-icon-loop-all');
+        var loopOneIcon = loopBtn.querySelector('.mp-icon-loop-one');
+        var loopNoneIcon = loopBtn.querySelector('.mp-icon-loop-none');
+        if (loop === 'one') {
+          loopBtn.title = '单曲循环';
+          if (loopAllIcon) loopAllIcon.style.display = 'none';
+          if (loopOneIcon) loopOneIcon.style.display = '';
+          if (loopNoneIcon) loopNoneIcon.style.display = 'none';
+        } else if (loop === 'all') {
+          loopBtn.title = '列表循环';
+          if (loopAllIcon) loopAllIcon.style.display = '';
+          if (loopOneIcon) loopOneIcon.style.display = 'none';
+          if (loopNoneIcon) loopNoneIcon.style.display = 'none';
+        } else {
+          loopBtn.title = '关闭循环';
+          if (loopAllIcon) loopAllIcon.style.display = 'none';
+          if (loopOneIcon) loopOneIcon.style.display = 'none';
+          if (loopNoneIcon) loopNoneIcon.style.display = '';
         }
       }, 100);
     }
@@ -661,6 +755,7 @@
     el.addEventListener('click', function(e) {
       if (e.target === tips || e.target.closest('.nav-music-tips')) return;
       if (e.target.closest('.aplayer-button')) return;
+      if (e.target.closest('.mp-btn')) return;
       if (playing) {
         togglePanel();
       }

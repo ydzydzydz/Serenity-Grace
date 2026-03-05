@@ -1014,14 +1014,24 @@ spec:
           name: enabled
           label: 启用音乐播放器
           value: false
-          help: 在页面左下角显示一个迷你音乐播放器（基于 APlayer + MetingJS，仅支持网易云音乐）
+          help: 在页面左下角显示一个迷你音乐播放器。注意：为防止发生不必要的冲突，只配置其一即可。
         - $formkit: text
           name: playlistId
-          label: 歌单 ID
+          label: 网易于官方接口（歌单 ID）
           placeholder: "12345678"
-          help: 网易云音乐歌单 ID，从歌单页面 URL 中获取
+          help: 网易云音乐歌单 ID，从歌单页面 URL 中获取。
+        - $formkit: text
+          name: metingApi
+          label: 自定义 API 地址
+          placeholder: "https://www.api.com/meting/?server=tencent&type=playlist&id=7538846482"
+          help: |
+            支持自定义 Meting-API
+            数据源 server: netease(网易云音乐)、tencent(QQ音乐)
+            类型 type: song(单曲)、playlist(歌单)、albumlist(专辑列表)、search(搜索)
+            类型 ID: 单曲/歌单 ID，搜索状态填 0
+            搜索关键词 keyword（仅 search）: 如 泡沫、邓紫棋
+            最高音质 br（仅 song/url）: 纯数字如 300
         - $formkit: checkbox
           name: autoPlay
           label: 自动播放
           value: false
-          help: 页面加载后用户首次交互时自动播放音乐（受浏览器自动播放策略限制，需用户点击/滚动/按键后才会开始播放）

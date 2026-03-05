@@ -105,13 +105,13 @@
         <div class="container">
           <div class="hero-profile">
             <div class="hero-avatar-wrapper">
-              <div class="hero-avatar" data-aos="zoom-in"
+              <div class="hero-avatar"
                    th:style="${theme.config.hero.avatarGlowColor != null and !#strings.isEmpty(theme.config.hero.avatarGlowColor) ? '--avatar-glow:' + theme.config.hero.avatarGlowColor : ''}">
               <img th:src="${theme.config.hero.avatar ?: '/themes/theme-Serenity/assets/public/ics6.webp'}" 
                    th:alt="${site.title}" alt="Avatar" />
             </div>
               <!-- 天气时钟 - 头像下方 -->
-              <div class="hero-weather-bar" th:if="${theme.config.home != null && theme.config.home.showWeatherClock}" data-aos="fade-up" data-aos-delay="150"
+              <div class="hero-weather-bar" th:if="${theme.config.home != null && theme.config.home.showWeatherClock}"
                    th:style="${theme.config.hero.weatherColor != null and !#strings.isEmpty(theme.config.hero.weatherColor) ? '--weather-color:' + theme.config.hero.weatherColor : ''}">
                 <span class="weather-item">
                   <span class="weather-text" id="heroTime">--:--</span>
@@ -129,7 +129,7 @@
             </div>
             
             <div class="hero-info">
-              <h1 class="hero-name" data-aos="fade-up" data-aos-delay="100" th:if="${theme.config.hero.enableTypewriter == true}"
+              <h1 class="hero-name" th:if="${theme.config.hero.enableTypewriter == true}"
                   th:classappend="${theme.config.hero.nameColor != null and !#strings.isEmpty(theme.config.hero.nameColor) ? ' hero-name-custom' : ''}"
                   th:style="${theme.config.hero.nameColor != null and !#strings.isEmpty(theme.config.hero.nameColor) ? 'background:' + theme.config.hero.nameColor + ';-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent' : ''}">
                 <span class="typewriter-text" th:attr="data-text=${theme.config.hero.name ?: site.title}">Serenity</span>
@@ -137,18 +137,18 @@
                       th:classappend="${theme.config.hero.nameColor != null and !#strings.isEmpty(theme.config.hero.nameColor) ? ' typewriter-cursor-custom' : ''}"
                       th:style="${theme.config.hero.nameColor != null and !#strings.isEmpty(theme.config.hero.nameColor) ? 'background:' + theme.config.hero.nameColor : ''}"></span>
               </h1>
-              <h1 class="hero-name" data-aos="fade-up" data-aos-delay="100" th:if="${theme.config.hero.enableTypewriter != true}" th:text="${theme.config.hero.name ?: site.title}"
+              <h1 class="hero-name" th:if="${theme.config.hero.enableTypewriter != true}" th:text="${theme.config.hero.name ?: site.title}"
                   th:classappend="${theme.config.hero.nameColor != null and !#strings.isEmpty(theme.config.hero.nameColor) ? ' hero-name-custom' : ''}"
                   th:style="${theme.config.hero.nameColor != null and !#strings.isEmpty(theme.config.hero.nameColor) ? 'background:' + theme.config.hero.nameColor + ';-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent' : ''}">Serenity</h1>
               
-              <p class="hero-tagline" data-aos="fade-up" data-aos-delay="200" th:text="${theme.config.hero.tagline ?: site.subtitle}"
+              <p class="hero-tagline" th:text="${theme.config.hero.tagline ?: site.subtitle}"
                  th:classappend="${theme.config.hero.taglineColor != null and !#strings.isEmpty(theme.config.hero.taglineColor) ? ' hero-tagline-custom' : ''}"
                  th:style="${theme.config.hero.taglineColor != null and !#strings.isEmpty(theme.config.hero.taglineColor) ? (#strings.contains(theme.config.hero.taglineColor, 'gradient') ? 'background:' + theme.config.hero.taglineColor + ';-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent' : 'color:' + theme.config.hero.taglineColor) : ''}">一个热爱技术与生活的开发者</p>
-              <p class="hero-bio" data-aos="fade-up" data-aos-delay="300" th:text="${theme.config.hero.bio ?: '专注于前端开发，热爱开源，喜欢分享技术与生活。'}"
+              <p class="hero-bio" th:text="${theme.config.hero.bio ?: '专注于前端开发，热爱开源，喜欢分享技术与生活。'}"
                  th:classappend="${theme.config.hero.bioColor != null and !#strings.isEmpty(theme.config.hero.bioColor) ? ' hero-bio-custom' : ''}"
                  th:style="${theme.config.hero.bioColor != null and !#strings.isEmpty(theme.config.hero.bioColor) ? (#strings.contains(theme.config.hero.bioColor, 'gradient') ? 'background:' + theme.config.hero.bioColor + ';-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent' : 'color:' + theme.config.hero.bioColor) : ''}">专注于前端开发，热爱开源，喜欢分享技术与生活。</p>
               
-              <div class="hero-social" data-aos="fade-up" data-aos-delay="400" th:if="${theme.config.social != null && theme.config.social.links != null}">
+              <div class="hero-social" th:if="${theme.config.social != null && theme.config.social.links != null}">
                 <th:block th:each="link : ${theme.config.social.links}">
                   <a th:if="${link.url != null && !#strings.isEmpty(link.url)}" 
                      th:href="${link.icon == 'email' && (link.iconifyIcon == null || #strings.isEmpty(link.iconifyIcon)) ? 'mailto:' + link.url : link.url}"
