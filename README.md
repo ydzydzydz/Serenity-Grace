@@ -1,10 +1,4 @@
 <div align="center">
-
-<img src="https://raw.githubusercontent.com/atangccc/Serenity-Grace/main/screenshots/1.png" alt="Serenity-Grace Banner" width="800" />
-
-<br/>
-<br/>
-
 # 🌸 Serenity-Grace
 
 **简约优雅的 Halo 2.x 博客主题**
