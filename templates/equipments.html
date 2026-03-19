@@ -19,13 +19,15 @@
 			</header>
 
 			<!-- 未安装插件提示 -->
-			<div th:if="${groups == null}" class="equipments-empty" data-aos="fade-up">
-				<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
-					stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-					<rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-					<polyline points="16 7 16 2 8 2 8 7"></polyline>
-				</svg>
-				<p>请先安装并启用「装备管理」插件</p>
+			<div th:if="${groups == null}" class="plugin-notice" data-aos="fade-up">
+				<div class="plugin-notice-icon">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+						<polyline points="16 7 16 2 8 2 8 7"></polyline>
+					</svg>
+				</div>
+				<h3 class="plugin-notice-title">装备库功能需要安装插件</h3>
+				<p class="plugin-notice-desc">请先安装并启用「装备管理」插件</p>
 			</div>
 
 			<!-- 插件已安装时的正常内容 -->
@@ -86,13 +88,15 @@
 					</th:block>
 				</div>
 
-				<div class="equipments-empty" th:if="${#lists.isEmpty(groups)}" data-aos="fade-up">
-					<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-						<rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-						<polyline points="16 7 16 2 8 2 8 7"></polyline>
-					</svg>
-					<p>还没有添加任何装备哦~</p>
+				<div class="plugin-notice" th:if="${#lists.isEmpty(groups)}" data-aos="fade-up">
+					<div class="plugin-notice-icon">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+							<polyline points="16 7 16 2 8 2 8 7"></polyline>
+						</svg>
+					</div>
+					<h3 class="plugin-notice-title">暂无装备</h3>
+					<p class="plugin-notice-desc">添加装备后将在此展示</p>
 				</div>
 			</th:block>
 		</div>

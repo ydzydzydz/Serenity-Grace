@@ -27,11 +27,14 @@
         </div>
         
         <!-- 未安装插件提示 -->
-        <div th:if="${momentFinder == null}" class="moments-empty" data-aos="fade-up">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-          </svg>
-          <p>碎碎念功能需要安装「瞬间」插件</p>
+        <div th:if="${momentFinder == null}" class="plugin-notice" data-aos="fade-up">
+          <div class="plugin-notice-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <h3 class="plugin-notice-title">碎碎念功能需要安装插件</h3>
+          <p class="plugin-notice-desc">请先安装并启用「瞬间」插件</p>
         </div>
         
         <!-- 动态列表 -->
@@ -117,11 +120,14 @@
             </div>
             
             <!-- 空状态 -->
-            <div class="moments-empty" th:if="${#lists.isEmpty(momentsResult.items)}" data-aos="fade-up">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-              </svg>
-              <p>暂无动态</p>
+            <div class="plugin-notice" th:if="${#lists.isEmpty(momentsResult.items)}" data-aos="fade-up">
+              <div class="plugin-notice-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+              </div>
+              <h3 class="plugin-notice-title">暂无动态</h3>
+              <p class="plugin-notice-desc">发布瞬间后将在此展示</p>
             </div>
           </div>
         </th:block>

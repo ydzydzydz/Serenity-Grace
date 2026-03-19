@@ -39,11 +39,14 @@
     </div>
 
     <!-- 未安装插件提示 -->
-    <div th:if="${wishFinder == null}" class="wish-empty-page" data-aos="fade-up">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48">
-        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
-      </svg>
-      <p>请先安装并启用「心愿便签」插件</p>
+    <div th:if="${wishFinder == null}" class="plugin-notice" data-aos="fade-up">
+      <div class="plugin-notice-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+        </svg>
+      </div>
+      <h3 class="plugin-notice-title">心愿便签功能需要安装插件</h3>
+      <p class="plugin-notice-desc">请先安装并启用「心愿便签」插件</p>
     </div>
 
     <!-- 插件已安装时的正常内容 -->
@@ -61,11 +64,14 @@
       <!-- Board (Finder API 服务端渲染便签卡片) -->
       <th:block th:with="wishes=${wishFinder.listApproved()}, typeMap=${wishFinder.getTypeMap()}">
         <div class="wish-board" id="wishBoard" data-aos="fade-up" data-aos-delay="150">
-          <div class="wish-empty" id="wishEmpty" th:if="${#lists.isEmpty(wishes)}">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48">
-              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
-            </svg>
-            <p>还没有便签，来贴第一张吧</p>
+          <div class="wish-empty" id="wishEmpty" th:if="${#lists.isEmpty(wishes)}" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;width:100%;">
+            <div class="plugin-notice-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="40" height="40">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+              </svg>
+            </div>
+            <h3 class="plugin-notice-title">暂无便签</h3>
+            <p class="plugin-notice-desc">来贴第一张便签吧</p>
           </div>
           <div class="wish-card" th:each="wish : ${wishes}"
                th:data-type="${wish.spec.type}"

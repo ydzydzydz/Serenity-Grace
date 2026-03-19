@@ -44,9 +44,14 @@
       </th:block>
 
       <th:block th:if="${#lists.isEmpty(categories)}">
-        <div class="empty-state" style="text-align:center;padding:4rem 1rem;color:var(--color-text-muted);" data-aos="fade-up">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48" style="margin:0 auto 1rem;display:block;opacity:0.5;"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-          <p style="font-size:1.1rem;">暂无分类</p>
+        <div class="plugin-notice" data-aos="fade-up">
+          <div class="plugin-notice-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <h3 class="plugin-notice-title">暂无分类</h3>
+          <p class="plugin-notice-desc">创建分类后将在此展示</p>
         </div>
       </th:block>
     </div>

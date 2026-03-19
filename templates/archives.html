@@ -61,10 +61,14 @@
               </th:block>
             </th:block>
           </th:block>
-          <div th:if="${#lists.isEmpty(archives.items)}" class="empty-state" style="text-align:center;padding:4rem 1rem;color:var(--color-text-muted);">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48" style="margin:0 auto 1rem;display:block;opacity:0.5;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            <p style="font-size:1.1rem;">暂无文章</p>
-            <p style="font-size:0.875rem;margin-top:0.5rem;">去写一篇新的文章吧</p>
+          <div th:if="${#lists.isEmpty(archives.items)}" class="plugin-notice" data-aos="fade-up">
+            <div class="plugin-notice-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+              </svg>
+            </div>
+            <h3 class="plugin-notice-title">暂无文章</h3>
+            <p class="plugin-notice-desc">去写一篇新的文章吧</p>
           </div>
 
         </div>

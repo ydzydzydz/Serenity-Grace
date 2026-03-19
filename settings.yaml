@@ -1031,7 +1031,7 @@ spec:
               id: about_tags_enabled
               name: showTags
               label: 显示个人标签
-              value: true
+              value: false
               help: 在关于页面头像两侧显示个人标签
             - $formkit: repeater
               name: tagsLeft
@@ -1069,7 +1069,7 @@ spec:
               id: about_mascot_enabled
               name: showMascot
               label: 显示吉祥物
-              value: true
+              value: false
               help: 是否在关于页面显示吉祥物（站在卡片上的小人）
             - $formkit: attachment
               name: mascotImage
@@ -1091,7 +1091,7 @@ spec:
               id: about_site_enabled
               name: showAboutSite
               label: 显示关于本站
-              value: true
+              value: false
               help: 在关于页面显示"关于本站"部分
             - $formkit: textarea
               name: aboutSite
@@ -1107,7 +1107,7 @@ spec:
               id: about_skills_enabled
               name: showSkills
               label: 显示技能列表
-              value: true
+              value: false
               help: 在关于页面显示技能卡片
             - $formkit: repeater
               name: skills
@@ -1206,7 +1206,7 @@ spec:
               id: about_history_enabled
               name: showSiteHistory
               label: 显示建站历程
-              value: true
+              value: false
               help: 在关于页面显示"建站历程"部分
             - $formkit: textarea
               name: siteHistory
@@ -1268,7 +1268,7 @@ spec:
               id: about_forever_enabled
               name: showForeverBlog
               label: 显示十年之约
-              value: true
+              value: false
               help: 是否在关于页面显示十年之约倒计时组件
             - $formkit: text
               name: foreverBlogStartDate

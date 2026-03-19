@@ -72,9 +72,14 @@
           </a>
         </th:block>
         <th:block th:if="${#lists.isEmpty(posts.items)}">
-          <div class="empty-state" style="text-align:center;padding:4rem 1rem;color:var(--color-text-muted);">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48" style="margin:0 auto 1rem;display:block;opacity:0.5;"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-            <p style="font-size:1.1rem;">该标签下暂无文章</p>
+          <div class="plugin-notice">
+            <div class="plugin-notice-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/>
+              </svg>
+            </div>
+            <h3 class="plugin-notice-title">该标签下暂无文章</h3>
+            <p class="plugin-notice-desc">发布文章并添加该标签后将在此展示</p>
           </div>
         </th:block>
       </div>

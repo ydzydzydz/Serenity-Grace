@@ -22,13 +22,16 @@
         </div>
         
         <!-- 未安装插件提示 -->
-        <div th:if="${photoFinder == null}" class="photos-empty" data-aos="fade-up">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-            <circle cx="8.5" cy="8.5" r="1.5"/>
-            <polyline points="21 15 16 10 5 21"/>
-          </svg>
-          <p>图库功能需要安装「图库」插件</p>
+        <div th:if="${photoFinder == null}" class="plugin-notice" data-aos="fade-up">
+          <div class="plugin-notice-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+          </div>
+          <h3 class="plugin-notice-title">图库功能需要安装插件</h3>
+          <p class="plugin-notice-desc">请先安装并启用「图库」插件</p>
         </div>
         
         <!-- 分组筛选标签 -->
@@ -62,12 +65,15 @@
         </th:block>
         
         <!-- 无数据占位 -->
-        <th:block th:if="${photoGroups == null || photoGroups.isEmpty()}">
-          <div class="photos-empty" data-aos="fade-up" style="text-align:center;padding:4rem 1rem;color:var(--color-text-muted);">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48" style="margin:0 auto 1rem;display:block;opacity:0.5;">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
-            </svg>
-            <p style="font-size:1.1rem;">暂无照片</p>
+        <th:block th:if="${photoFinder != null && (photoGroups == null || photoGroups.isEmpty())}">
+          <div class="plugin-notice" data-aos="fade-up">
+            <div class="plugin-notice-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+              </svg>
+            </div>
+            <h3 class="plugin-notice-title">暂无照片</h3>
+            <p class="plugin-notice-desc">上传照片后将在此展示</p>
           </div>
         </th:block>
         

@@ -55,10 +55,14 @@
             </a>
           </th:block>
         </div>
-        <div th:if="${groups == null || #lists.isEmpty(groups)}" class="empty-state" style="text-align:center;padding:4rem 1rem;color:var(--color-text-muted);">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48" style="margin:0 auto 1rem;display:block;opacity:0.5;"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
-          <p style="font-size:1.1rem;">暂无友链</p>
-          <p style="font-size:0.875rem;margin-top:0.5rem;">快去添加第一位朋友吧</p>
+        <div th:if="${groups == null || #lists.isEmpty(groups)}" class="plugin-notice">
+          <div class="plugin-notice-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>
+            </svg>
+          </div>
+          <h3 class="plugin-notice-title">暂无友链</h3>
+          <p class="plugin-notice-desc">快去添加第一位朋友吧</p>
         </div>
       </section>
 
