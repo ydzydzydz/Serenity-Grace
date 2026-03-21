@@ -210,7 +210,8 @@
         </div>
       </section>
 
-      <section class="compass-zone" th:if="${theme.config.compass != null and theme.config.compass.compassConfig != null and theme.config.compass.compassConfig.enabled}">
+      <section class="compass-zone" th:if="${theme.config.compass != null and theme.config.compass.compassConfig != null and theme.config.compass.compassConfig.enabled}"
+               th:with="customIcons=${theme.config.basic != null ? theme.config.basic.customNavIcons : null}">
         <div class="container">
           <div class="hero-compass">
             <h2 class="compass-title" data-aos="fade-up" th:text="${theme.config.compass.compassConfig.title ?: '风向标'}">风向标</h2>
@@ -218,7 +219,7 @@
             <div class="compass-grid">
               <!--/* 遍历主菜单（含子菜单），根据风向标开关过滤，图标和文字与导航菜单同步 */-->
               <th:block th:each="menuItem, iterStat : ${menuFinder.getPrimary().menuItems}">
-                <!--/* 一级菜单项（无子菜单，或本身也有链接） */-->
+                <!--/* 一级菜单项：内置模板路径匹配 */-->
                 <th:block th:with="mHref=${menuItem.status.href}">
                   <a th:if="${
                     (#strings.contains(mHref, '/archives') and theme.config.compass.compassConfig.showArchives) or
@@ -241,6 +242,26 @@
                     <th:block th:replace="~{modules/nav-icon :: icon(href=${mHref}, item=${menuItem})}" />
                     <span th:text="${menuItem.status.displayName}">菜单</span>
                   </a>
+                  <!--/* 一级菜单项：自定义页面图标匹配（不在内置12个路径中时） */-->
+                  <th:block th:if="${
+                    !#strings.contains(mHref, '/archives') and !#strings.contains(mHref, '/tags') and
+                    !#strings.contains(mHref, '/categories') and !#strings.contains(mHref, '/about') and
+                    !#strings.contains(mHref, '/moments') and !#strings.contains(mHref, '/links') and
+                    !#strings.contains(mHref, '/guestbook') and !#strings.contains(mHref, '/projects') and
+                    !#strings.contains(mHref, '/photos') and !#strings.contains(mHref, '/friends-circle') and
+                    !#strings.contains(mHref, '/wishes') and !#strings.contains(mHref, '/equipments')
+                  }">
+                    <th:block th:if="${customIcons != null}" th:each="ci : ${customIcons}">
+                      <a th:if="${ci.slug != null and !#strings.isEmpty(ci.slug) and #strings.contains(mHref, '/' + ci.slug) and (ci.showInCompass == null or ci.showInCompass)}"
+                         th:href="@{${mHref}}"
+                         th:target="${menuItem.spec.target?.value}"
+                         class="compass-item" data-aos="fade-up"
+                         th:attr="data-aos-delay=${iterStat.index * 100}">
+                        <th:block th:replace="~{modules/nav-icon :: icon(href=${mHref}, item=${menuItem})}" />
+                        <span th:text="${menuItem.status.displayName}">菜单</span>
+                      </a>
+                    </th:block>
+                  </th:block>
                 </th:block>
                 <!--/* 二级子菜单展开 */-->
                 <th:block th:if="${not #lists.isEmpty(menuItem.children)}"
@@ -267,6 +288,26 @@
                     <th:block th:replace="~{modules/nav-icon :: icon(href=${cHref}, item=${childMenu})}" />
                     <span th:text="${childMenu.status.displayName}">子菜单</span>
                   </a>
+                  <!--/* 二级子菜单：自定义页面图标匹配 */-->
+                  <th:block th:if="${
+                    !#strings.contains(cHref, '/archives') and !#strings.contains(cHref, '/tags') and
+                    !#strings.contains(cHref, '/categories') and !#strings.contains(cHref, '/about') and
+                    !#strings.contains(cHref, '/moments') and !#strings.contains(cHref, '/links') and
+                    !#strings.contains(cHref, '/guestbook') and !#strings.contains(cHref, '/projects') and
+                    !#strings.contains(cHref, '/photos') and !#strings.contains(cHref, '/friends-circle') and
+                    !#strings.contains(cHref, '/wishes') and !#strings.contains(cHref, '/equipments')
+                  }">
+                    <th:block th:if="${customIcons != null}" th:each="ci : ${customIcons}">
+                      <a th:if="${ci.slug != null and !#strings.isEmpty(ci.slug) and #strings.contains(cHref, '/' + ci.slug) and (ci.showInCompass == null or ci.showInCompass)}"
+                         th:href="@{${cHref}}"
+                         th:target="${childMenu.spec.target?.value}"
+                         class="compass-item" data-aos="fade-up"
+                         th:attr="data-aos-delay=${(iterStat.index * 100) + ((childStat.index + 1) * 50)}">
+                        <th:block th:replace="~{modules/nav-icon :: icon(href=${cHref}, item=${childMenu})}" />
+                        <span th:text="${childMenu.status.displayName}">子菜单</span>
+                      </a>
+                    </th:block>
+                  </th:block>
                 </th:block>
               </th:block>
             </div>

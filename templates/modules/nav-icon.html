@@ -112,10 +112,18 @@
     </svg>
   </th:block>
 
-  <!-- 未匹配已知路径：annotation fallback -->
-  <th:block th:if="${!#strings.contains(href, '/archives') and !#strings.contains(href, '/tags') and !#strings.contains(href, '/categories') and !#strings.contains(href, '/about') and !#strings.contains(href, '/moments') and !#strings.contains(href, '/links') and !#strings.contains(href, '/guestbook') and !#strings.contains(href, '/projects') and !#strings.contains(href, '/photos') and !#strings.contains(href, '/friends-circle') and !#strings.contains(href, '/wishes') and !#strings.contains(href, '/equipments')}">
+  <!-- 未匹配已知路径：先查自定义页面图标列表，再 annotation fallback -->
+  <th:block th:if="${!#strings.contains(href, '/archives') and !#strings.contains(href, '/tags') and !#strings.contains(href, '/categories') and !#strings.contains(href, '/about') and !#strings.contains(href, '/moments') and !#strings.contains(href, '/links') and !#strings.contains(href, '/guestbook') and !#strings.contains(href, '/projects') and !#strings.contains(href, '/photos') and !#strings.contains(href, '/friends-circle') and !#strings.contains(href, '/wishes') and !#strings.contains(href, '/equipments')}"
+            th:with="customIcons=${theme.config.basic != null ? theme.config.basic.customNavIcons : null}">
+    <!--/* 遍历自定义页面图标列表匹配 */-->
+    <th:block th:if="${customIcons != null}" th:each="ci : ${customIcons}">
+      <i th:if="${ci.slug != null and !#strings.isEmpty(ci.slug) and #strings.contains(href, '/' + ci.slug) and ci.icon != null and !#strings.isEmpty(ci.icon)}"
+         th:classappend="${ci.icon}" class="nav-custom-icon"></i>
+    </th:block>
+    <!--/* annotation fallback（自定义列表未匹配时） */-->
     <i th:if="${!#strings.isEmpty(ac)}" th:classappend="${ac}" class="nav-custom-icon"></i>
-    <svg th:if="${#strings.isEmpty(ac)}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <!--/* 最终默认图标（无自定义匹配且无 annotation 时） */-->
+    <svg th:if="${#strings.isEmpty(ac) and (customIcons == null or #lists.isEmpty(customIcons))}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
     </svg>
   </th:block>

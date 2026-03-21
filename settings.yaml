@@ -173,6 +173,28 @@ spec:
               placeholder: "fa-solid fa-toolbox"
               help: 装备页面图标
         - $formkit: repeater
+          name: customNavIcons
+          label: 自定义页面导航图标
+          help: 为非主题内置模板的自定义页面配置导航图标。slug 填写页面 URL 中的路径，如 https://example.com/test 中的 test。配置后导航栏和风向标均会显示对应图标
+          children:
+            - $formkit: text
+              name: slug
+              label: 页面路径 (Slug)
+              validation: required
+              placeholder: "例如：test"
+              help: 页面 URL 中的路径部分，如 /test 中的 test
+            - $formkit: text
+              name: icon
+              label: 图标代码
+              validation: required
+              placeholder: "fa-solid fa-star"
+              help: Font Awesome 图标类名，图标查找：https://fontawesome.com/search?o=r&m=free
+            - $formkit: checkbox
+              name: showInCompass
+              label: 在风向标中显示
+              value: true
+              help: 是否在首页风向标区域显示此页面
+        - $formkit: repeater
           name: categoryIcons
           label: 分类图标列表
           help: 为每个分类配置自定义图标和颜色，slug 填写分类 URL 中的路径，如 /categories/kai-fa 中的 kai-fa
