@@ -509,7 +509,7 @@
               <div class="swiper-wrapper">
                 <th:block th:if="${momentsResult != null && momentsResult.items != null && !momentsResult.items.isEmpty()}">
                   <th:block th:each="moment : ${momentsResult.items}" th:with="content = ${moment.spec.content}">
-                    <a href="/moments" class="swiper-slide life-card" th:with="defaultImg = @{/assets/public/fengm.webp}, hasMedia = ${content != null && content.medium != null && !content.medium.isEmpty()}, firstMedia = ${hasMedia ? content.medium[0] : null}, isVideo = ${firstMedia != null && firstMedia.type.name() == 'VIDEO'}, isPhoto = ${firstMedia != null && firstMedia.type.name() == 'PHOTO'}, mediaUrl = ${(isPhoto || isVideo) ? firstMedia.url : defaultImg}">
+                    <a href="/moments" class="swiper-slide life-card" th:with="hasMedia = ${content != null && content.medium != null && !content.medium.isEmpty()}, firstMedia = ${hasMedia ? content.medium[0] : null}, isVideo = ${firstMedia != null && firstMedia.type.name() == 'VIDEO'}, isPhoto = ${firstMedia != null && firstMedia.type.name() == 'PHOTO'}, mediaUrl = ${(isPhoto || isVideo) ? firstMedia.url : ''}">
                       <!-- 图片类型 -->
                       <img th:if="${!isVideo}" th:src="${mediaUrl}" alt="" loading="lazy" />
                       <!-- 视频类型 - 显示视频缩略图 -->
