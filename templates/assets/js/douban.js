@@ -100,7 +100,12 @@ class DoubanPage {
         document.querySelector(".douban-status-item.is-active")?.classList.remove("is-active");
         el.classList.add("is-active");
         this.status = el.dataset.status;
-        this._updateActive(el);
+        document.querySelector(".douban-list").innerHTML = "";
+        document.querySelector(".lds-ripple")?.classList.remove("u-hide");
+        this.page = 1;
+        this.finished = false;
+        this.items = [];
+        this._fetchData();
     }
 
     _toggleGenres() {
