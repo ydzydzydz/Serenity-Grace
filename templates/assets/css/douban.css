@@ -295,6 +295,7 @@
 .db--info {
     flex: 1;
     min-width: 0;
+    padding: 1rem;
 }
 
 .db--title {
@@ -437,11 +438,20 @@
         flex-direction: column;
     }
     
+    .db--info {
+        text-align: center;
+    }
+    
+    .db--itemGenres {
+        justify-content: center;
+    }
+    
     .db--image {
         width: 100%;
         height: auto;
         aspect-ratio: 2/3;
         max-width: 200px;
+        margin: 0 auto;
     }
     
     .db--item__music .db--image {
