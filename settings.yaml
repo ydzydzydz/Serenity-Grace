@@ -99,6 +99,7 @@ spec:
             iconFriendsCircle: "fa-solid fa-camera"
             iconWishes: "fa-solid fa-note-sticky"
             iconEquipments: "fa-solid fa-toolbox"
+            iconDouban: "fa-solid fa-graduation-cap"
           children:
             - $formkit: text
               name: iconArchives
@@ -172,6 +173,12 @@ spec:
               value: "fa-solid fa-toolbox"
               placeholder: "fa-solid fa-toolbox"
               help: 装备页面图标
+            - $formkit: text
+              name: iconDouban
+              label: 豆瓣图标
+              value: "fa-solid fa-graduation-cap"
+              placeholder: "fa-solid fa-graduation-cap"
+              help: 豆瓣页面图标
         - $formkit: repeater
           name: customNavIcons
           label: 自定义页面导航图标
@@ -1598,6 +1605,26 @@ spec:
               if: $get(pt_guestbook_enabled).value
               label: 页面副标题
               value: "来几句走心的评论吧，留下你的足迹"
+        - $formkit: group
+          name: douban
+          label: 豆瓣
+          children:
+            - $formkit: switch
+              id: pt_douban_enabled
+              name: enabled
+              label: 自定义标题
+              value: false
+              help: 启用后使用自定义标题和副标题
+            - $formkit: text
+              name: title
+              if: $get(pt_douban_enabled).value
+              label: 页面标题
+              value: "豆瓣"
+            - $formkit: text
+              name: subtitle
+              if: $get(pt_douban_enabled).value
+              label: 页面副标题
+              value: "探索豆瓣上的内容"
         - $formkit: group
           name: tags
           label: 标签页面

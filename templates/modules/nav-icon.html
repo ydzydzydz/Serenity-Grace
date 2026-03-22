@@ -112,8 +112,19 @@
     </svg>
   </th:block>
 
+  <!-- 豆瓣 -->
+  <th:block th:if="${#strings.contains(href, '/douban')}">
+    <i th:if="${(ni != null and ni.iconDouban != null and !#strings.isEmpty(ni.iconDouban)) or !#strings.isEmpty(ac)}"
+      th:classappend="${(ni != null and ni.iconDouban != null and !#strings.isEmpty(ni.iconDouban)) ? ni.iconDouban : ac}" class="nav-custom-icon"></i>
+    <svg th:if="${(ni == null or ni.iconTags == null or #strings.isEmpty(ni.iconTags)) and #strings.isEmpty(ac)}"
+      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+      <line x1="7" y1="7" x2="7.01" y2="7" />
+    </svg>
+  </th:block>
+
   <!-- 未匹配已知路径：先查自定义页面图标列表，再 annotation fallback -->
-  <th:block th:if="${!#strings.contains(href, '/archives') and !#strings.contains(href, '/tags') and !#strings.contains(href, '/categories') and !#strings.contains(href, '/about') and !#strings.contains(href, '/moments') and !#strings.contains(href, '/links') and !#strings.contains(href, '/guestbook') and !#strings.contains(href, '/projects') and !#strings.contains(href, '/photos') and !#strings.contains(href, '/friends-circle') and !#strings.contains(href, '/wishes') and !#strings.contains(href, '/equipments')}"
+  <th:block th:if="${!#strings.contains(href, '/archives') and !#strings.contains(href, '/tags') and !#strings.contains(href, '/categories') and !#strings.contains(href, '/about') and !#strings.contains(href, '/moments') and !#strings.contains(href, '/links') and !#strings.contains(href, '/guestbook') and !#strings.contains(href, '/projects') and !#strings.contains(href, '/photos') and !#strings.contains(href, '/friends-circle') and !#strings.contains(href, '/wishes') and !#strings.contains(href, '/equipments') and !#strings.contains(href, '/douban')}"
             th:with="customIcons=${theme.config.basic != null ? theme.config.basic.customNavIcons : null}">
     <!--/* 遍历自定义页面图标列表匹配 */-->
     <th:block th:if="${customIcons != null}" th:each="ci : ${customIcons}">
