@@ -6,6 +6,7 @@ class DoubanPage {
         this.type = "movie";
         this.status = "done";
         this.finished = false;
+        this.loading = false;
         this.page = 1;
         this.genres = [];
         this.items = [];
@@ -21,6 +22,7 @@ class DoubanPage {
 
         if (this.type === "movie") this._fetchGenres();
         this._fetchData();
+        this._observeLoadMore();
     }
 
     _translateNav() {
@@ -37,6 +39,22 @@ class DoubanPage {
         this.type = activeNav?.dataset.type || listType || this.type;
     }
 
+    _observeLoadMore() {
+        const sentinel = document.querySelector(".block-more");
+        if (!sentinel) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !this.finished && !this.loading) {
+                    this.page++;
+                    this._fetchData();
+                }
+            });
+        }, { rootMargin: "100px" });
+
+        observer.observe(sentinel);
+    }
+
     _bindEvents() {
         document.addEventListener("click", e => {
             const nav = e.target.closest(".douban-nav-item");
@@ -50,18 +68,6 @@ class DoubanPage {
             const status = e.target.closest(".douban-status-item");
             if (status && !status.classList.contains("is-active")) {
                 this._switchStatus(status);
-            }
-        });
-
-        window.addEventListener("scroll", () => {
-            if (this.finished) return;
-            const more = document.querySelector(".block-more");
-            if (more?.getBoundingClientRect().top < window.innerHeight) {
-                const loading = document.querySelector(".lds-ripple");
-                if (loading && !loading.classList.contains("u-hide")) {
-                    this.page++;
-                    this._fetchData();
-                }
             }
         });
     }
@@ -128,9 +134,12 @@ class DoubanPage {
     }
 
     _fetchData() {
+        if (this.loading) return;
+        this.loading = true;
+
         const url = new URL("/apis/api.douban.moony.la/v1alpha1/doubanmovies", location.origin);
         url.searchParams.set("page", this.page);
-        url.searchParams.set("size", "20");
+        url.searchParams.set("size", "10");
         url.searchParams.set("type", this.type);
         url.searchParams.set("status", this.status);
         this.genres.forEach(g => url.searchParams.append("genre", g));
@@ -146,10 +155,12 @@ class DoubanPage {
                     this.finished = true;
                 }
                 this._hideLoading();
+                this.loading = false;
             })
             .catch(() => {
                 this._hideLoading();
                 if (!this.items.length) this._renderEmpty();
+                this.loading = false;
             });
     }
 

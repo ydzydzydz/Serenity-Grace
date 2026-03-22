@@ -1,23 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
-    th:replace="~{modules/layout :: html(title = ${pageTitle ?: (singlePage != null ? singlePage.spec.title : '豆瓣')}, content = ~{::content}, head = ~{::head})}">
+    th:replace="~{modules/layout :: html(title = ${pageTitle ?: (singlePage?.spec?.title ?: '豆瓣')}, content = ~{::content}, head = ~{::head})}">
 <th:block th:fragment="head">
     <link rel="stylesheet" th:href="@{/assets/css/douban.css}" />
     <script th:src="@{/assets/js/douban.js}" defer></script>
     <meta property="og:type" content="website" />
-    <meta property="og:title"
-        th:content="${(pageTitle ?: (singlePage != null ? singlePage.spec.title : '豆瓣')) + ' - ' + (theme.config.basic?.siteInfo?.title ?: site.title)}" />
+    <meta property="og:title" th:content="${(pageTitle ?: (singlePage?.spec?.title ?: '豆瓣')) + ' - ' + (theme.config.basic?.siteInfo?.title ?: site.title)}" />
     <meta property="og:description" th:content="${pageSubtitle ?: '豆瓣，记录你的生活'}" />
 </th:block>
 <th:block th:fragment="content">
+    <th:block th:with="doubanTitle=${theme.config.watermark?.douban?.enabled ? theme.config.watermark.douban.title : null},
+        doubanSub=${theme.config.watermark?.douban?.enabled ? theme.config.watermark.douban.subtitle : null}">
     <main class="main">
         <div class="container">
             <section class="douban-page">
                 <header class="douban-header" data-aos="fade-up">
-                    <h1 class="douban-title"
-                        th:text="${(theme.config.watermark?.douban?.enabled == true ? theme.config.watermark.douban.title : null) ?: '豆瓣'}">豆瓣</h1>
-                    <p class="douban-subtitle"
-                        th:text="${(theme.config.watermark?.douban?.enabled == true ? theme.config.watermark.douban.subtitle : null) ?: '记录你的生活'}">记录你的生活</p>
+                    <h1 class="douban-title" th:text="${doubanTitle ?: '豆瓣'}">豆瓣</h1>
+                    <p class="douban-subtitle" th:text="${doubanSub ?: '记录你的生活'}">记录你的生活</p>
                 </header>
 
                 <div th:if="${doubanFinder == null}" class="plugin-notice" data-aos="fade-up">
@@ -40,15 +39,17 @@
                         </nav>
 
                         <div class="douban-status">
-                            <div class="douban-status-item" data-status="mark">想看</div>
-                            <div class="douban-status-item" data-status="doing">在看</div>
-                            <div class="douban-status-item is-active" data-status="done">看过</div>
+                            <div th:each="s : ${T(java.util.Map).of('mark','想看','doing','在看','done','看过')}"
+                                class="douban-status-item"
+                                th:classappend="${s.key == 'done' ? 'is-active' : ''}"
+                                th:data-status="${s.key}"
+                                th:text="${s.value}"></div>
                         </div>
 
                         <div class="douban-genres"></div>
                         <div class="douban-list" data-type="movie"></div>
 
-                        <div class="block-more block-more-centered">
+                        <div class="block-more">
                             <div class="lds-ripple u-hide"></div>
                         </div>
                     </div>
@@ -56,5 +57,6 @@
             </section>
         </div>
     </main>
+    </th:block>
 </th:block>
 </html>

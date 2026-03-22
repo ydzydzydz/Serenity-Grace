@@ -1,7 +1,5 @@
-/* ===== 页面布局 ===== */
 .douban-page {
-    padding-top: calc(var(--header-height) + var(--space-8));
-    padding-bottom: var(--space-10);
+    padding: calc(var(--header-height) + var(--space-8)) 0 var(--space-10);
     min-height: 100vh;
 }
 
@@ -11,7 +9,6 @@
     padding: 0 var(--space-4);
 }
 
-/* ===== 页面标题 ===== */
 .douban-header {
     text-align: center;
     margin-bottom: var(--space-8);
@@ -52,113 +49,56 @@
     color: var(--color-text-muted);
 }
 
-/* ===== 导航 ===== */
-.douban-nav {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    margin-bottom: var(--space-6);
-}
-
-.douban-nav-item {
-    display: flex;
-    align-items: center;
-    padding: var(--space-2) var(--space-4);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-full);
-    background: var(--color-bg);
-    color: var(--color-text-secondary);
-    font-size: .875rem;
-    cursor: pointer;
-    transition: all .3s;
-}
-
-.douban-nav-item:hover {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
-}
-
-.douban-nav-item.is-active {
-    background: var(--color-accent);
-    border-color: var(--color-accent);
-    color: #fff;
-}
-
-/* ===== 类型筛选 ===== */
-.douban-status {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    margin-bottom: var(--space-6);
-}
-
-.douban-status-item {
-    padding: var(--space-1) var(--space-4);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-full);
-    background: var(--color-bg);
-    color: var(--color-text-secondary);
-    font-size: .875rem;
-    cursor: pointer;
-    transition: all .3s;
-}
-
-.douban-status-item:hover {
-    border-color: var(--color-accent-secondary);
-    color: var(--color-accent-secondary);
-}
-
-.douban-status-item.is-active {
-    background: var(--color-accent-secondary);
-    border-color: var(--color-accent-secondary);
-    color: #fff;
-}
-
-/* ===== 标签筛选 ===== */
+.douban-nav,
+.douban-status,
 .douban-genres {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     gap: var(--space-2);
-    margin-bottom: var(--space-4);
 }
 
+.douban-nav { margin-bottom: var(--space-6); }
+.douban-status { margin-bottom: var(--space-6); }
+.douban-genres { margin-bottom: var(--space-4); }
+
+.douban-nav-item,
+.douban-status-item,
 .douban-genre-item {
-    background: var(--color-bg-mute);
+    padding: var(--space-1) var(--space-4);
     border: 1px solid var(--color-border);
-    padding: var(--space-1) var(--space-3);
     border-radius: var(--radius-full);
-    font-size: .75rem;
-    color: var(--color-text-secondary);
+    background: var(--color-bg);
+    font-size: .875rem;
     cursor: pointer;
     transition: all .3s;
 }
 
-.douban-genre-item:hover {
-    border-color: var(--color-accent-secondary);
-    color: var(--color-accent-secondary);
-}
+.douban-nav-item { padding: var(--space-2) var(--space-4); }
+.douban-genre-item { padding: var(--space-1) var(--space-3); font-size: .75rem; background: var(--color-bg-mute); }
 
-.douban-genre-item.is-active {
-    background: var(--color-accent);
-    border-color: var(--color-accent);
-    color: #fff;
-}
+.douban-nav-item,
+.douban-genre-item { color: var(--color-text-secondary); }
 
-/* ===== 列表 ===== */
+.douban-nav-item:hover,
+.douban-status-item:hover { border-color: var(--color-accent); }
+.douban-nav-item:hover { color: var(--color-accent); }
+.douban-status-item:hover { border-color: var(--color-accent-secondary); color: var(--color-accent-secondary); }
+.douban-genre-item:hover { border-color: var(--color-accent-secondary); color: var(--color-accent-secondary); }
+
+.douban-nav-item.is-active { background: var(--color-accent); border-color: var(--color-accent); color: #fff; }
+.douban-status-item.is-active { background: var(--color-accent-secondary); border-color: var(--color-accent-secondary); color: #fff; }
+.douban-genre-item.is-active { background: var(--color-accent); border-color: var(--color-accent); color: #fff; }
+
 .douban-list {
     display: flex;
     flex-direction: column;
     gap: var(--space-5);
-    position: relative;
 }
 
 .douban-item {
     display: flex;
     gap: var(--space-3);
-    align-items: flex-start;
     position: relative;
 }
 
@@ -174,33 +114,24 @@
     border-radius: var(--radius-full);
 }
 
-/* ===== 图标 ===== */
 .douban-icon {
     flex-shrink: 0;
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-secondary) 100%);
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-secondary));
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
+    box-shadow: 0 2px 8px rgba(0,0,0,.12);
     transition: all .3s;
     position: relative;
     z-index: 2;
 }
 
-.douban-icon:hover {
-    transform: scale(1.1);
-}
+.douban-icon:hover { transform: scale(1.1); }
+.douban-icon svg { width: 20px; height: 20px; fill: #fff; }
 
-.douban-icon svg {
-    width: 20px;
-    height: 20px;
-    fill: #fff;
-}
-
-/* ===== 卡片 ===== */
 .douban-card {
     flex: 1;
     position: relative;
@@ -208,14 +139,11 @@
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     padding: var(--space-3);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, .06);
+    box-shadow: 0 2px 12px rgba(0,0,0,.06);
     transition: all .3s;
 }
 
-.douban-card:hover {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, .1);
-    transform: translateY(-2px);
-}
+.douban-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,.1); transform: translateY(-2px); }
 
 .douban-card::after {
     content: "";
@@ -227,7 +155,7 @@
     border-style: solid;
     border-width: 6px 8px 6px 0;
     border-color: transparent var(--color-bg-soft) transparent transparent;
-    filter: drop-shadow(-2px 0 1px rgba(0, 0, 0, .05));
+    filter: drop-shadow(-2px 0 1px rgba(0,0,0,.05));
 }
 
 .douban-card-header {
@@ -237,10 +165,7 @@
     margin-bottom: var(--space-2);
 }
 
-.douban-time {
-    font-size: .75rem;
-    color: var(--color-text-muted);
-}
+.douban-time { font-size: .75rem; color: var(--color-text-muted); }
 
 .douban-score {
     display: flex;
@@ -250,16 +175,12 @@
     color: var(--color-text-secondary);
 }
 
-/* ===== 内容区 ===== */
 .douban-content {
     display: flex;
     gap: var(--space-3);
-    align-items: flex-start;
 }
 
-.douban-poster-wrap {
-    flex-shrink: 0;
-}
+.douban-poster-wrap { flex-shrink: 0; }
 
 .douban-poster {
     width: 80px;
@@ -300,9 +221,7 @@
     transition: color var(--duration-fast);
 }
 
-.douban-name a:hover {
-    color: var(--color-accent);
-}
+.douban-name a:hover { color: var(--color-accent); }
 
 .douban-tags {
     display: flex;
@@ -349,38 +268,15 @@
     transition: all .3s;
 }
 
-.douban-card:hover .douban-download {
-    opacity: 1;
-}
+.douban-card:hover .douban-download { opacity: 1; }
+.douban-download:hover { background: var(--color-accent); border-color: var(--color-accent); color: #fff; }
 
-.douban-download:hover {
-    background: var(--color-accent);
-    border-color: var(--color-accent);
-    color: #fff;
-}
+.douban-empty { text-align: center; padding: var(--space-12) var(--space-4); color: var(--color-text-muted); }
 
-/* ===== 空状态 ===== */
-.douban-empty {
-    text-align: center;
-    padding: var(--space-12) var(--space-4);
-    color: var(--color-text-muted);
-}
+.block-more { text-align: center; padding: var(--space-6) 0; display: flex; justify-content: center; }
 
-/* ===== 加载更多 ===== */
-.block-more {
-    text-align: center;
-    padding: var(--space-6) 0;
-}
-
-.block-more-centered {
-    display: flex;
-    justify-content: center;
-}
-
-/* ===== 加载动画 ===== */
 .lds-ripple {
     display: inline-block;
-    position: relative;
     width: 40px;
     height: 40px;
 }
@@ -391,81 +287,26 @@
     position: absolute;
     border: 3px solid var(--color-accent);
     border-radius: 50%;
-    animation: ripple 1s cubic-bezier(0, .2, .8, 1) infinite;
+    animation: ripple 1s cubic-bezier(0,.2,.8,1) infinite;
     opacity: .6;
 }
 
-.lds-ripple::after {
-    animation-delay: -.5s;
-}
+.lds-ripple::after { animation-delay: -.5s; }
 
 @keyframes ripple {
-    0% {
-        top: 16px;
-        left: 16px;
-        width: 0;
-        height: 0;
-        opacity: 1;
-    }
-    100% {
-        top: 0;
-        left: 0;
-        width: 40px;
-        height: 40px;
-        opacity: 0;
-    }
+    0% { top: 16px; left: 16px; width: 0; height: 0; opacity: 1; }
+    100% { top: 0; left: 0; width: 40px; height: 40px; opacity: 0; }
 }
 
-/* ===== 工具类 ===== */
-.u-hide {
-    display: none !important;
-}
+.u-hide { display: none !important; }
 
-/* ===== 响应式 ===== */
 @media (max-width: 640px) {
-    .douban-content {
-        display: block;
-        text-align: center;
-    }
-
-    .douban-poster-wrap {
-        display: flex;
-        justify-content: center;
-    }
-
-    .douban-poster {
-        width: 100%;
-        height: auto;
-        aspect-ratio: 2/3;
-        max-width: 200px;
-    }
-
-    .douban-info {
-        flex-direction: column;
-        align-items: center;
-        min-height: auto;
-        margin-top: var(--space-3);
-    }
-
-    .douban-info-main {
-        text-align: center;
-    }
-
-    .douban-tags {
-        justify-content: center;
-    }
-
-    .douban-download {
-        display: none;
-    }
-
-    .douban-name {
-        font-size: .9rem;
-    }
-
-    .douban-card-header {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
+    .douban-content { display: block; text-align: center; }
+    .douban-poster-wrap { display: flex; justify-content: center; }
+    .douban-poster { width: 100%; height: auto; aspect-ratio: 2/3; max-width: 200px; }
+    .douban-info { flex-direction: column; align-items: center; min-height: auto; margin-top: var(--space-3); }
+    .douban-info-main { text-align: center; }
+    .douban-tags { justify-content: center; }
+    .douban-download { display: none; }
+    .douban-name { font-size: .9rem; }
 }
