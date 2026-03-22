@@ -273,32 +273,35 @@
 
 .douban-empty { text-align: center; padding: var(--space-12) var(--space-4); color: var(--color-text-muted); }
 
-.block-more { text-align: center; padding: var(--space-6) 0; display: flex; justify-content: center; }
-
-.lds-ripple {
-    display: inline-block;
-    width: 40px;
-    height: 40px;
+.douban-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: var(--space-8) 0;
 }
 
-.lds-ripple::before,
-.lds-ripple::after {
-    content: "";
-    position: absolute;
-    border: 3px solid var(--color-accent);
+.douban-loading-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--color-accent);
     border-radius: 50%;
-    animation: ripple 1s cubic-bezier(0,.2,.8,1) infinite;
-    opacity: .6;
+    animation: douban-bounce 1.4s infinite ease-in-out both;
 }
 
-.lds-ripple::after { animation-delay: -.5s; }
+.douban-loading-dot:nth-child(1) { animation-delay: -0.32s; }
+.douban-loading-dot:nth-child(2) { animation-delay: -0.16s; }
 
-@keyframes ripple {
-    0% { top: 16px; left: 16px; width: 0; height: 0; opacity: 1; }
-    100% { top: 0; left: 0; width: 40px; height: 40px; opacity: 0; }
+@keyframes douban-bounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
 }
 
-.u-hide { display: none !important; }
+.block-more {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-6) 0;
+}
 
 @media (max-width: 640px) {
     .douban-content { display: block; text-align: center; }

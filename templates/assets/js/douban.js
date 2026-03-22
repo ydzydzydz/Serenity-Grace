@@ -10,6 +10,7 @@ class DoubanPage {
         this.page = 1;
         this.genres = [];
         this.items = [];
+        this.observer = null;
         this._init();
     }
 
@@ -40,19 +41,23 @@ class DoubanPage {
     }
 
     _observeLoadMore() {
+        if (this.observer) {
+            this.observer.disconnect();
+        }
+
         const sentinel = document.querySelector(".block-more");
         if (!sentinel) return;
 
-        const observer = new IntersectionObserver((entries) => {
+        this.observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting && !this.finished && !this.loading) {
                     this.page++;
-                    this._fetchData();
+                    this._fetchData(true);
                 }
             });
         }, { rootMargin: "100px" });
 
-        observer.observe(sentinel);
+        this.observer.observe(sentinel);
     }
 
     _bindEvents() {
@@ -103,7 +108,6 @@ class DoubanPage {
         this.genres = [];
         document.querySelectorAll(".douban-genre-item").forEach(item => item.classList.remove("is-active"));
         document.querySelector(".douban-list").innerHTML = "";
-        document.querySelector(".lds-ripple")?.classList.remove("u-hide");
         this.page = 1;
         this.finished = false;
         this.items = [];
@@ -138,9 +142,15 @@ class DoubanPage {
             });
     }
 
-    _fetchData() {
+    _fetchData(isLoadMore = false) {
         if (this.loading) return;
         this.loading = true;
+
+        if (isLoadMore) {
+            this._showLoadingMore();
+        } else {
+            this._showLoading();
+        }
 
         const url = new URL("/apis/api.douban.moony.la/v1alpha1/doubanmovies", location.origin);
         url.searchParams.set("page", this.page);
@@ -154,67 +164,102 @@ class DoubanPage {
             .then(data => {
                 if (data.items?.length) {
                     this.items.push(...data.items);
-                    this._render();
+                    this._render(isLoadMore);
                 } else {
                     if (!this.items.length) this._renderEmpty();
                     this.finished = true;
+                    if (isLoadMore) this._hideLoadingMore();
                 }
-                this._hideLoading();
                 this.loading = false;
             })
             .catch(() => {
-                this._hideLoading();
                 if (!this.items.length) this._renderEmpty();
+                this._hideLoadingMore();
                 this.loading = false;
             });
     }
 
-    _hideLoading() {
-        document.querySelector(".lds-ripple")?.classList.add("u-hide");
+    _showLoading() {
+        const list = document.querySelector(".douban-list");
+        if (!list) return;
+        list.innerHTML = '<div class="douban-loading"><div class="douban-loading-dot"></div><div class="douban-loading-dot"></div><div class="douban-loading-dot"></div></div>';
     }
 
-    _render() {
+    _showLoadingMore() {
+        const blockMore = document.querySelector(".block-more");
+        if (!blockMore) return;
+        blockMore.innerHTML = '<div class="douban-loading"><div class="douban-loading-dot"></div><div class="douban-loading-dot"></div><div class="douban-loading-dot"></div></div>';
+    }
+
+    _hideLoadingMore() {
+        const blockMore = document.querySelector(".block-more");
+        if (blockMore) blockMore.innerHTML = "";
+    }
+
+    _render(isLoadMore = false) {
         const list = document.querySelector(".douban-list");
         if (!list || !this.items.length) return;
 
-        list.innerHTML = this.items.map(item => {
-            const time = item.faves?.createTime ? new Date(item.faves.createTime) : null;
-            const date = time ? `${time.getFullYear()}-${String(time.getMonth() + 1).padStart(2, "0")}-${String(time.getDate()).padStart(2, "0")}` : "";
-            const score = item.spec.score > 0 ? item.spec.score : null;
-            const tags = item.spec.genres?.map(g => `<span class="douban-tag">${g}</span>`).join("") || "";
+        if (isLoadMore) {
+            const fragment = document.createDocumentFragment();
+            const newItems = this.items.slice(-10);
+            newItems.forEach(item => {
+                fragment.appendChild(this._createItemEl(item));
+            });
+            list.appendChild(fragment);
+        } else {
+            list.innerHTML = this.items.map(item => this._createItemHTML(item)).join("");
+        }
 
-            return `
-            <div class="douban-item">
-                <div class="douban-icon">${this._icon()}</div>
-                <div class="douban-card">
-                    <div class="douban-card-header">
-                        <span class="douban-time">${date}</span>
-                        <span class="douban-score">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="#f5c518"><path d="M12 20.1l5.82 3.682c1.066.675 2.37-.322 2.09-1.584l-1.543-6.926 5.146-4.667c.94-.85.435-2.465-.799-2.567l-6.773-.602L13.29.89a1.38 1.38 0 0 0-2.581 0l-2.65 6.53-6.774.602C.052 8.126-.453 9.74.486 10.59l5.147 4.666-1.542 6.926c-.28 1.262 1.023 2.26 2.09 1.585L12 20.099z"/></svg>
-                            ${score || "暂无评分"}
-                        </span>
-                    </div>
-                    <div class="douban-content">
-                        <a href="${item.spec.link}" target="_blank" rel="noopener" class="douban-poster-wrap">
-                            <img src="${item.spec.poster}" referrerpolicy="unsafe-url" class="douban-poster" loading="lazy" alt="${item.spec.name}" />
-                        </a>
-                        <div class="douban-info">
-                            <div class="douban-info-main">
-                                <div class="douban-name">
-                                    <a href="${item.spec.link}" target="_blank" rel="noopener">${item.spec.name}</a>
-                                </div>
-                                <div class="douban-tags">${tags}</div>
-                                ${item.spec.cardSubtitle ? `<div class="douban-desc">${item.spec.cardSubtitle}</div>` : ""}
+        if (this.finished) {
+            const blockMore = document.querySelector(".block-more");
+            if (blockMore) blockMore.innerHTML = "";
+        }
+    }
+
+    _createItemHTML(item) {
+        const time = item.faves?.createTime ? new Date(item.faves.createTime) : null;
+        const date = time ? `${time.getFullYear()}-${String(time.getMonth() + 1).padStart(2, "0")}-${String(time.getDate()).padStart(2, "0")}` : "";
+        const score = item.spec.score > 0 ? item.spec.score : null;
+        const tags = item.spec.genres?.map(g => `<span class="douban-tag">${g}</span>`).join("") || "";
+
+        return `
+        <div class="douban-item">
+            <div class="douban-icon">${this._icon()}</div>
+            <div class="douban-card">
+                <div class="douban-card-header">
+                    <span class="douban-time">${date}</span>
+                    <span class="douban-score">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="#f5c518"><path d="M12 20.1l5.82 3.682c1.066.675 2.37-.322 2.09-1.584l-1.543-6.926 5.146-4.667c.94-.85.435-2.465-.799-2.567l-6.773-.602L13.29.89a1.38 1.38 0 0 0-2.581 0l-2.65 6.53-6.774.602C.052 8.126-.453 9.74.486 10.59l5.147 4.666-1.542 6.926c-.28 1.262 1.023 2.26 2.09 1.585L12 20.099z"/></svg>
+                        ${score || "暂无评分"}
+                    </span>
+                </div>
+                <div class="douban-content">
+                    <a href="${item.spec.link}" target="_blank" rel="noopener" class="douban-poster-wrap">
+                        <img src="${item.spec.poster}" referrerpolicy="unsafe-url" class="douban-poster" loading="lazy" alt="${item.spec.name}" />
+                    </a>
+                    <div class="douban-info">
+                        <div class="douban-info-main">
+                            <div class="douban-name">
+                                <a href="${item.spec.link}" target="_blank" rel="noopener">${item.spec.name}</a>
                             </div>
-                            <button class="douban-download" onclick="Douban.download('${item.spec.poster}', '${item.spec.name}')">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                                下载海报
-                            </button>
+                            <div class="douban-tags">${tags}</div>
+                            ${item.spec.cardSubtitle ? `<div class="douban-desc">${item.spec.cardSubtitle}</div>` : ""}
                         </div>
+                        <button class="douban-download" onclick="Douban.download('${item.spec.poster}', '${item.spec.name}')">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            下载海报
+                        </button>
                     </div>
                 </div>
-            </div>`;
-        }).join("");
+            </div>
+        </div>`;
+    }
+
+    _createItemEl(item) {
+        const div = document.createElement("div");
+        div.innerHTML = this._createItemHTML(item);
+        return div.firstElementChild;
     }
 
     _renderEmpty() {
