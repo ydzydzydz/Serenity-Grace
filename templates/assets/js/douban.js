@@ -116,8 +116,6 @@ class DoubanPage {
     }
 
     _updateActive(nav) {
-        document.querySelector(".douban-list").innerHTML = "";
-        document.querySelector(".lds-ripple")?.classList.remove("u-hide");
         document.querySelectorAll(".douban-nav-item.is-active").forEach(el => el.classList.remove("is-active"));
         nav.classList.add("is-active");
         this.page = 1;

@@ -30,7 +30,7 @@
                 </div>
 
                 <th:block th:if="${doubanFinder != null}">
-                    <div class="douban-container">
+                    <div class="douban-container" data-aos="fade-up">
                         <nav class="douban-nav">
                             <div th:each="type : ${types}" class="douban-nav-item"
                                 th:classappend="${type.key == 'movie' ? 'is-active' : ''}"
