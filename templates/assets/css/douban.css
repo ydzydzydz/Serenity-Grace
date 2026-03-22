@@ -1,8 +1,4 @@
-/*
- * Theme: theme-Serenity
- * Douban Page Styles
- */
-
+/* ===== 页面布局 ===== */
 .douban-page {
     padding-top: calc(var(--header-height) + var(--space-8));
     padding-bottom: var(--space-10);
@@ -15,56 +11,49 @@
     padding: 0 var(--space-4);
 }
 
+/* ===== 页面标题 ===== */
 .douban-header {
     text-align: center;
     margin-bottom: var(--space-8);
 }
 
 .douban-title {
+    position: relative;
     font-size: 2rem;
     font-weight: 800;
     font-style: italic;
     color: transparent;
     -webkit-text-stroke: 1.5px var(--color-accent);
     margin-bottom: var(--space-2);
-    position: relative;
     display: inline-block;
-    transition: color var(--duration-normal), -webkit-text-fill-color var(--duration-normal);
-    cursor: default;
+    transition: color var(--duration-normal);
 }
 
-.douban-header:hover .douban-title {
+.douban-title:hover {
     color: var(--color-accent);
     -webkit-text-fill-color: var(--color-accent);
 }
 
-.douban-title::before,
-.douban-title::after {
-    content: '';
+.douban-title::before {
+    content: "";
     position: absolute;
     bottom: -12px;
-    height: 3px;
-    border-radius: var(--radius-full);
-}
-
-.douban-title::before {
     left: 50%;
     transform: translateX(-50%);
     width: 80px;
+    height: 3px;
     background: linear-gradient(90deg, transparent, var(--color-accent) 20%, var(--color-accent-secondary) 50%, var(--color-accent) 80%, transparent);
+    border-radius: var(--radius-full);
 }
 
 .douban-subtitle {
-    font-size: 0.9rem;
-    color: var(--color-text-muted);
     margin-top: var(--space-6);
+    font-size: .9rem;
+    color: var(--color-text-muted);
 }
 
-.db--container {
-    position: relative;
-}
-
-.db--nav {
+/* ===== 导航 ===== */
+.douban-nav {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -72,8 +61,7 @@
     margin-bottom: var(--space-6);
 }
 
-.db--navItem,
-.filter-btn {
+.douban-nav-item {
     display: flex;
     align-items: center;
     padding: var(--space-2) var(--space-4);
@@ -81,58 +69,24 @@
     border-radius: var(--radius-full);
     background: var(--color-bg);
     color: var(--color-text-secondary);
-    font-size: 0.875rem;
+    font-size: .875rem;
     cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: capitalize;
+    transition: all .3s;
 }
 
-.db--navItem:hover,
-.filter-btn:hover {
+.douban-nav-item:hover {
     border-color: var(--color-accent);
     color: var(--color-accent);
 }
 
-.db--navItem.active,
-.db--navItem.current,
-.filter-btn.active,
-.filter-btn.current {
+.douban-nav-item.is-active {
     background: var(--color-accent);
     border-color: var(--color-accent);
     color: #fff;
 }
 
-.db--genres {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    margin-bottom: var(--space-4);
-}
-
-.db--genreItem {
-    background: var(--color-bg-mute);
-    border: 1px solid var(--color-border);
-    font-size: 0.75rem;
-    padding: var(--space-1) var(--space-3);
-    border-radius: var(--radius-full);
-    color: var(--color-text-secondary);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.db--genreItem:hover {
-    border-color: var(--color-accent-secondary);
-    color: var(--color-accent-secondary);
-}
-
-.db--genreItem.is-active {
-    background: var(--color-accent);
-    border-color: var(--color-accent);
-    color: #fff !important;
-}
-
-.db--type {
+/* ===== 类型筛选 ===== */
+.douban-status {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -140,55 +94,88 @@
     margin-bottom: var(--space-6);
 }
 
-.db--typeItem {
+.douban-status-item {
     padding: var(--space-1) var(--space-4);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-full);
     background: var(--color-bg);
     color: var(--color-text-secondary);
-    font-size: 0.875rem;
+    font-size: .875rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all .3s;
 }
 
-.db--typeItem:hover {
+.douban-status-item:hover {
     border-color: var(--color-accent-secondary);
     color: var(--color-accent-secondary);
 }
 
-.db--typeItem.is-active {
+.douban-status-item.is-active {
     background: var(--color-accent-secondary);
     border-color: var(--color-accent-secondary);
     color: #fff;
 }
 
-.db--list {
+/* ===== 标签筛选 ===== */
+.douban-genres {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+}
+
+.douban-genre-item {
+    background: var(--color-bg-mute);
+    border: 1px solid var(--color-border);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    font-size: .75rem;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all .3s;
+}
+
+.douban-genre-item:hover {
+    border-color: var(--color-accent-secondary);
+    color: var(--color-accent-secondary);
+}
+
+.douban-genre-item.is-active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #fff;
+}
+
+/* ===== 列表 ===== */
+.douban-list {
     display: flex;
     flex-direction: column;
     gap: var(--space-5);
     position: relative;
 }
 
-.db--item {
+.douban-item {
     display: flex;
     gap: var(--space-3);
     align-items: flex-start;
     position: relative;
 }
 
-.db--item:not(:last-child)::before {
-    content: '';
+.douban-item:not(:last-child)::before {
+    content: "";
     position: absolute;
     left: 20px;
     top: 56px;
     bottom: -12px;
     width: 2px;
     background: linear-gradient(to bottom, transparent 0%, var(--color-accent) 15%, var(--color-accent-secondary) 50%, var(--color-accent) 85%, transparent 100%);
-    opacity: 0.6;
+    opacity: .6;
     border-radius: var(--radius-full);
 }
 
-.db--icon {
+/* ===== 图标 ===== */
+.douban-icon {
     flex-shrink: 0;
     width: 42px;
     height: 42px;
@@ -197,44 +184,41 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
+    transition: all .3s;
     position: relative;
     z-index: 2;
 }
 
-.db--icon:hover {
+.douban-icon:hover {
     transform: scale(1.1);
 }
 
-.db--icon svg {
+.douban-icon svg {
     width: 20px;
     height: 20px;
     fill: #fff;
 }
 
-.db--item__music .db--icon {
-    background: linear-gradient(135deg, #f5c518 0%, #ff6b6b 100%);
-}
-
-.db--card {
+/* ===== 卡片 ===== */
+.douban-card {
     flex: 1;
     position: relative;
     background: var(--color-bg-soft);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     padding: var(--space-3);
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    border: 1px solid var(--color-border);
-    transition: all 0.3s ease;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, .06);
+    transition: all .3s;
 }
 
-.db--card:hover {
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+.douban-card:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, .1);
     transform: translateY(-2px);
 }
 
-.db--card::after {
-    content: '';
+.douban-card::after {
+    content: "";
     position: absolute;
     left: -8px;
     top: 14px;
@@ -243,119 +227,92 @@
     border-style: solid;
     border-width: 6px 8px 6px 0;
     border-color: transparent var(--color-bg-soft) transparent transparent;
-    filter: drop-shadow(-2px 0 1px rgba(0,0,0,0.05));
+    filter: drop-shadow(-2px 0 1px rgba(0, 0, 0, .05));
 }
 
-.db--card-header {
+.douban-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: var(--space-2);
 }
 
-.db--time-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-1);
-    font-size: 0.75rem;
+.douban-time {
+    font-size: .75rem;
     color: var(--color-text-muted);
 }
 
-.db--score {
+.douban-score {
     display: flex;
     align-items: center;
     gap: var(--space-1);
-    font-size: 0.8rem;
+    font-size: .8rem;
     color: var(--color-text-secondary);
 }
 
-.db--score svg {
-    fill: #f5c518;
-}
-
-.db--content {
+/* ===== 内容区 ===== */
+.douban-content {
     display: flex;
     gap: var(--space-3);
-    position: relative;
+    align-items: flex-start;
 }
 
-.db--image {
+.douban-poster-wrap {
+    flex-shrink: 0;
+}
+
+.douban-poster {
     width: 80px;
     height: 110px;
     object-fit: cover;
     border-radius: var(--radius-md);
-    flex-shrink: 0;
 }
 
-.db--download {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    padding: 6px 10px;
-    background: rgba(0, 0, 0, 0.6);
-    border-radius: var(--radius-sm);
+.douban-info {
+    flex: 1;
     display: flex;
+    gap: var(--space-6);
+    min-height: 110px;
     align-items: center;
-    gap: 6px;
-    color: #fff;
-    font-size: 12px;
-    opacity: 0;
-    transition: opacity var(--duration-fast);
-    text-decoration: none;
-    z-index: 1;
 }
 
-.db--content:hover .db--download {
-    opacity: 1;
-}
-
-.db--download:hover {
-    background: rgba(0, 0, 0, 0.8);
-}
-
-.db--download svg {
-    flex-shrink: 0;
-}
-
-.db--item__music .db--image {
-    width: 110px;
-    height: 110px;
-}
-
-.db--info {
+.douban-info-main {
     flex: 1;
     min-width: 0;
-    padding: 1rem;
+    padding: var(--space-3) 0 var(--space-3) var(--space-2);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: var(--space-2);
 }
 
-.db--title {
+.douban-name {
+    margin-bottom: var(--space-1);
     font-size: 1rem;
     font-weight: 600;
-    color: var(--color-text);
-    margin-bottom: var(--space-1);
     line-height: 1.4;
+    color: var(--color-text);
 }
 
-.db--title a {
+.douban-name a {
     color: inherit;
     text-decoration: none;
     transition: color var(--duration-fast);
 }
 
-.db--title a:hover {
+.douban-name a:hover {
     color: var(--color-accent);
 }
 
-.db--itemGenres {
+.douban-tags {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-1);
-    font-size: 0.7rem;
     margin-bottom: var(--space-2);
-    justify-content: flex-start;
+    font-size: .7rem;
 }
 
-.db--genre-tag {
+.douban-tag {
     background: var(--color-bg-mute);
     border: 1px solid var(--color-border);
     padding: 2px 6px;
@@ -363,8 +320,8 @@
     color: var(--color-text-secondary);
 }
 
-.db--desc {
-    font-size: 0.8rem;
+.douban-desc {
+    font-size: .8rem;
     color: var(--color-text-secondary);
     line-height: 1.5;
     display: -webkit-box;
@@ -374,47 +331,53 @@
     overflow: hidden;
 }
 
-.db--status {
-    display: inline-flex;
+.douban-download {
+    display: flex;
     align-items: center;
-    gap: var(--space-1);
-    font-size: 0.75rem;
-    padding: 2px 8px;
-    border-radius: var(--radius-full);
+    gap: 4px;
+    padding: 4px 8px;
+    background: var(--color-bg-mute);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    opacity: 0;
+    align-self: flex-start;
     margin-top: var(--space-2);
+    margin-left: calc(-1 * var(--space-1));
+    transition: all .3s;
 }
 
-.db--status--done {
-    background: rgba(245, 150, 170, 0.1);
-    color: var(--color-accent);
+.douban-card:hover .douban-download {
+    opacity: 1;
 }
 
-.db--status--doing {
-    background: rgba(251, 150, 110, 0.1);
-    color: var(--color-accent-secondary);
+.douban-download:hover {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #fff;
 }
 
-.db--status--mark {
-    background: rgba(245, 150, 170, 0.1);
-    color: var(--color-text-muted);
-}
-
-.db--empty {
+/* ===== 空状态 ===== */
+.douban-empty {
     text-align: center;
     padding: var(--space-12) var(--space-4);
     color: var(--color-text-muted);
 }
 
+/* ===== 加载更多 ===== */
 .block-more {
     text-align: center;
     padding: var(--space-6) 0;
 }
 
-.block-more__centered {
+.block-more-centered {
     display: flex;
     justify-content: center;
 }
 
+/* ===== 加载动画 ===== */
 .lds-ripple {
     display: inline-block;
     position: relative;
@@ -424,19 +387,19 @@
 
 .lds-ripple::before,
 .lds-ripple::after {
-    content: '';
+    content: "";
     position: absolute;
     border: 3px solid var(--color-accent);
     border-radius: 50%;
-    animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-    opacity: 0.6;
+    animation: ripple 1s cubic-bezier(0, .2, .8, 1) infinite;
+    opacity: .6;
 }
 
 .lds-ripple::after {
-    animation-delay: -0.5s;
+    animation-delay: -.5s;
 }
 
-@keyframes lds-ripple {
+@keyframes ripple {
     0% {
         top: 16px;
         left: 16px;
@@ -453,73 +416,56 @@
     }
 }
 
+/* ===== 工具类 ===== */
 .u-hide {
     display: none !important;
 }
 
-.db--copyright {
-    text-align: right;
-    font-size: 0.75rem;
-    color: var(--color-text-muted);
-    margin-top: var(--space-6);
-}
-
+/* ===== 响应式 ===== */
 @media (max-width: 640px) {
-    .db--content {
-        flex-direction: column;
-    }
-    
-    .db--info {
+    .douban-content {
+        display: block;
         text-align: center;
     }
-    
-    .db--itemGenres {
+
+    .douban-poster-wrap {
+        display: flex;
         justify-content: center;
     }
-    
-    .db--image {
+
+    .douban-poster {
         width: 100%;
         height: auto;
         aspect-ratio: 2/3;
         max-width: 200px;
-        margin: 0 auto;
     }
-    
-    .db--item__music .db--image {
-        width: 100%;
-        max-width: 200px;
-        height: auto;
-        aspect-ratio: 1;
+
+    .douban-info {
+        flex-direction: column;
+        align-items: center;
+        min-height: auto;
+        margin-top: var(--space-3);
     }
-    
-    .db--download {
+
+    .douban-info-main {
+        text-align: center;
+    }
+
+    .douban-tags {
+        justify-content: center;
+    }
+
+    .douban-download {
         display: none;
     }
-    
-    .db--title {
-        font-size: 0.9rem;
+
+    .douban-name {
+        font-size: .9rem;
     }
-    
-    .db--card-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--space-1);
-    }
-    
-    .db--download {
-        top: auto;
-        bottom: 0;
-        right: auto;
-        left: 50%;
-        transform: translateX(-50%);
-        opacity: 1;
-        background: rgba(0, 0, 0, 0.6);
-        padding: 4px 12px;
-        font-size: 11px;
-        border-radius: 0 0 var(--radius-sm) var(--radius-sm);
-        white-space: nowrap;
-        width: 100%;
-        max-width: 200px;
-        justify-content: center;
+
+    .douban-card-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
     }
 }
