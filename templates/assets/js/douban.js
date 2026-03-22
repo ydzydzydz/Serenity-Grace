@@ -10,6 +10,7 @@ class DoubanPage {
         this.page = 1;
         this.genres = [];
         this.items = [];
+        this.renderedIds = new Set();
         this.observer = null;
         this._init();
     }
@@ -80,6 +81,7 @@ class DoubanPage {
     _switchType(nav) {
         this.genres = [];
         this.type = nav.dataset.type;
+        this.renderedIds.clear();
         this._toggleGenres();
         if (this.type !== "book") {
             this._fetchGenres();
@@ -103,6 +105,7 @@ class DoubanPage {
         this.page = 1;
         this.finished = false;
         this.items = [];
+        this.renderedIds.clear();
         this._fetchData();
     }
 
@@ -111,6 +114,7 @@ class DoubanPage {
         el.classList.add("is-active");
         this.status = el.dataset.status;
         this.genres = [];
+        this.renderedIds.clear();
         document.querySelectorAll(".douban-genre-item").forEach(item => item.classList.remove("is-active"));
         document.querySelector(".douban-list").innerHTML = "";
         this.page = 1;
@@ -130,6 +134,7 @@ class DoubanPage {
         this.page = 1;
         this.finished = false;
         this.items = [];
+        this.renderedIds.clear();
         this._fetchData();
     }
 
@@ -207,13 +212,21 @@ class DoubanPage {
 
         if (isLoadMore) {
             const fragment = document.createDocumentFragment();
-            const newItems = this.items.slice(-10);
+            const newItems = this.items.slice(-10).filter(item => {
+                if (this.renderedIds.has(item.spec.id)) return false;
+                this.renderedIds.add(item.spec.id);
+                return true;
+            });
             newItems.forEach(item => {
                 fragment.appendChild(this._createItemEl(item));
             });
             list.appendChild(fragment);
         } else {
-            list.innerHTML = this.items.map(item => this._createItemHTML(item)).join("");
+            this.renderedIds.clear();
+            list.innerHTML = this.items.map(item => {
+                this.renderedIds.add(item.spec.id);
+                return this._createItemHTML(item);
+            }).join("");
         }
 
         if (this.finished) {
