@@ -149,10 +149,6 @@
     <td align="center">✨</td>
     <td><strong>过渡动画</strong> — PJAX 无刷新导航，页面切换淡入淡出，浏览体验流畅自然</td>
   </tr>
-  <tr>
-    <td align="center">🎨</td>
-    <td><strong>色相调节</strong> — 主题色相 0-360° 动态调节，一键切换主题色调</td>
-  </tr>
 </table>
 
 ### 📄 页面模板
