@@ -100,6 +100,8 @@ class DoubanPage {
         document.querySelector(".douban-status-item.is-active")?.classList.remove("is-active");
         el.classList.add("is-active");
         this.status = el.dataset.status;
+        this.genres = [];
+        document.querySelectorAll(".douban-genre-item").forEach(item => item.classList.remove("is-active"));
         document.querySelector(".douban-list").innerHTML = "";
         document.querySelector(".lds-ripple")?.classList.remove("u-hide");
         this.page = 1;
