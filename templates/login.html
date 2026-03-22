@@ -17,17 +17,22 @@
 
             <div th:replace="~{gateway_fragments/login::form}"></div>
 
-            <div class="social-divider" th:if="${socialAuthProviders != null && !socialAuthProviders.isEmpty()}">
-                <div class="divider-line"></div>
-                <div class="divider-text"><span>快速关联</span></div>
-            </div>
-            <div class="social-buttons" th:if="${socialAuthProviders != null && !socialAuthProviders.isEmpty()}">
-                <a th:each="provider : ${socialAuthProviders}"
-                   th:href="${provider.authenticationUrl}"
-                   class="social-btn">
-                    <span th:text="${provider.displayName}">Provider</span>
-                </a>
-            </div>
+            <th:block th:unless="${#lists.isEmpty(socialAuthProviders)}">
+                <div class="social-divider">
+                    <div class="divider-line"></div>
+                    <div class="divider-text"><span>快速关联</span></div>
+                </div>
+                <div class="social-buttons">
+                    <form th:each="provider : ${socialAuthProviders}"
+                          th:action="|/login/social/${provider.metadata.name}?remember-me=false|"
+                          method="post" class="social-btn-form">
+                        <button type="submit" class="social-btn">
+                            <img th:src="${provider.spec.logo}" th:alt="${provider.spec.displayName}" class="social-btn-icon" />
+                            <span th:text="${provider.spec.displayName}">Provider</span>
+                        </button>
+                    </form>
+                </div>
+            </th:block>
 
             <div class="gateway-switch">
                 <th:block th:if="${globalInfo.allowRegistration}">

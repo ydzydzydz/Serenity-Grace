@@ -194,10 +194,11 @@
     window.WELCOME_SAYINGS = window.WELCOME_SAYINGS.split('\n').filter(function(s) { return s.trim(); });
   </script>
 
-  <div class="page-transition" id="page-transition">
-    <div class="page-transition-spinner"><span></span></div>
-    <div class="page-transition-text">正在跳转...</div>
-  </div>
+  <th:block th:if="${theme.config.basic != null and theme.config.basic.loadingConfig != null and theme.config.basic.loadingConfig.enableLoading}">
+    <div class="page-transition" id="page-transition">
+      <img class="page-transition-gif" th:src="${theme.config.basic.loadingConfig.loadingGif != null and !#strings.isEmpty(theme.config.basic.loadingConfig.loadingGif) ? theme.config.basic.loadingConfig.loadingGif : '/themes/theme-Serenity/assets/images/welcome/kirara.gif'}" alt="加载中" />
+    </div>
+  </th:block>
   
   <div class="page-gradient"></div>
 

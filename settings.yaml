@@ -172,6 +172,26 @@ spec:
               value: "fa-solid fa-toolbox"
               placeholder: "fa-solid fa-toolbox"
               help: 装备页面图标
+        - $formkit: group
+          name: loadingConfig
+          label: 页面过渡动画
+          value:
+            enableLoading: false
+            loadingGif: ""
+          children:
+            - $formkit: switch
+              id: loading_enabled
+              name: enableLoading
+              label: 启用页面过渡动画
+              value: false
+              help: 开启后，点击站内链接跳转时会显示自定义 GIF 加载动画
+            - $formkit: attachment
+              name: loadingGif
+              label: 加载动画 GIF
+              if: $get(loading_enabled).value
+              accepts:
+                - "image/gif"
+              help: 仅支持 GIF 格式，建议尺寸 120×120 以内，透明背景效果更佳
         - $formkit: repeater
           name: customNavIcons
           label: 自定义页面导航图标
