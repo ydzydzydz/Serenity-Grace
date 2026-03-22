@@ -1,7 +1,6 @@
 /*
  * Theme: theme-Serenity
  * Douban Page Styles
- * Copyright © 2026 Serenity. All rights reserved.
  */
 
 .douban-page {
@@ -277,6 +276,7 @@
 .db--content {
     display: flex;
     gap: var(--space-3);
+    position: relative;
 }
 
 .db--image {
@@ -284,6 +284,36 @@
     height: 110px;
     object-fit: cover;
     border-radius: var(--radius-md);
+    flex-shrink: 0;
+}
+
+.db--download {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 6px 10px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #fff;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity var(--duration-fast);
+    text-decoration: none;
+    z-index: 1;
+}
+
+.db--content:hover .db--download {
+    opacity: 1;
+}
+
+.db--download:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.db--download svg {
     flex-shrink: 0;
 }
 
@@ -339,6 +369,7 @@
     line-height: 1.5;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -461,6 +492,10 @@
         aspect-ratio: 1;
     }
     
+    .db--download {
+        display: none;
+    }
+    
     .db--title {
         font-size: 0.9rem;
     }
@@ -469,5 +504,22 @@
         flex-direction: column;
         align-items: flex-start;
         gap: var(--space-1);
+    }
+    
+    .db--download {
+        top: auto;
+        bottom: 0;
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 1;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 4px 12px;
+        font-size: 11px;
+        border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+        white-space: nowrap;
+        width: 100%;
+        max-width: 200px;
+        justify-content: center;
     }
 }

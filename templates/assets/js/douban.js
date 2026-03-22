@@ -255,7 +255,17 @@ class HALO_DOUBAN {
                         ` : ''}
                     </div>
                     <div class="db--content">
-                        <img src="${item.spec.poster}" referrerpolicy="unsafe-url" class="db--image" loading="lazy" alt="${item.spec.name}" />
+                        <a href="${item.spec.link}" target="_blank" rel="noopener" style="position: relative; display: inline-block;">
+                            <img src="${item.spec.poster}" referrerpolicy="unsafe-url" class="db--image" loading="lazy" alt="${item.spec.name}" />
+                            <a class="db--download" href="javascript:void(0)" onclick="DoubanPlugin.downloadImage('${item.spec.poster}', '${item.spec.name}')" title="下载海报">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="7 10 12 15 17 10"/>
+                                    <line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                                <span>下载海报</span>
+                            </a>
+                        </a>
                         <div class="db--info">
                             <div class="db--title">
                                 <a href="${item.spec.link}" target="_blank" rel="noopener">${item.spec.name}</a>
@@ -307,3 +317,23 @@ document.addEventListener("pjax:complete", () => {
         window.haloDouban = new HALO_DOUBAN();
     }
 });
+
+window.DoubanPlugin = {
+    async downloadImage(url, name) {
+        try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            const blobUrl = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = blobUrl;
+            a.download = `${name}-poster.jpg`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(blobUrl);
+        } catch (err) {
+            console.error("下载失败:", err);
+            window.open(url, "_blank");
+        }
+    }
+};
