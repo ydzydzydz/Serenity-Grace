@@ -1,1 +1,309 @@
-class HALO_DOUBAN { constructor() { this.ver = "1.2.2", this.type = "movie", this.status = "done", this.finished = !1, this.paged = 1, this.genre_list = [], this.genre = [], this.subjects = [], this._create() } on(t, e, n) { document.querySelectorAll(e).forEach((item => { item.addEventListener(t, n) })) } _addSearchParams(url, params = {}) { return url = new URL(url, window.location.origin), new URL(`${url.origin}${url.pathname}?${new URLSearchParams([...Array.from(url.searchParams.entries()), ...Object.entries(params)])}`).href } _fetchGenres() { document.querySelector(".db--genres").innerHTML = ""; return fetch(this._addSearchParams("/apis/api.douban.moony.la/v1alpha1/doubanmovies/-/genres", { type: this.type })).then((response => response.json())).then((data => { data.length && (this.genre_list = data, this._renderGenre()) })), !0 } _statusChange() { this.on("click", ".db--typeItem", (t => { const self = t.currentTarget; self.classList.contains("is-active") || (document.querySelector(".db--list").innerHTML = "", document.querySelector(".lds-ripple").classList.remove("u-hide"), document.querySelector(".db--typeItem.is-active").classList.remove("is-active"), self.classList.add("is-active"), this.status = self.dataset.status, this.paged = 1, this.finished = !1, this.subjects = [], this._fetchData()) })) } _handleGenreClick() { this.on("click", ".db--genreItem", (t => { const self = t.currentTarget; if (self.classList.contains("is-active")) { const index = this.genre.indexOf(self.innerText); return self.classList.remove("is-active"), this.genre.splice(index, 1), this.paged = 1, this.finished = !1, this.subjects = [], void this._fetchData() } document.querySelector(".db--list").innerHTML = "", document.querySelector(".lds-ripple").classList.remove("u-hide"), self.classList.add("is-active"), this.genre.push(self.innerText), this.paged = 1, this.finished = !1, this.subjects = [], this._fetchData() })) } _renderGenre() { document.querySelector(".db--genres").innerHTML = this.genre_list.map((item => `<span class="db--genreItem">${item}</span>`)).join(""), this._handleGenreClick() } _fetchData() { var url = `/apis/api.douban.moony.la/v1alpha1/doubanmovies?page=${this.paged}&size=49&type=${this.type}&status=${this.status}`; const genre = this.genre; if (genre.length > 0) for (let i = 0; i < genre.length; i++)url += `&genre=${genre[i]}`; fetch(url).then((response => response.json())).then((data => { data.items.length ? (null == this.subjects && (this.subjects = []), document.querySelector(".db--list").classList.contains("db--list__card") ? (this.subjects = [...this.subjects, ...data.items], this._randerDateTemplate()) : (this.subjects = [...this.subjects, ...data.items], this._randerListTemplate()), document.querySelector(".lds-ripple").classList.add("u-hide")) : (document.querySelector(".db--list").classList.contains("db--list__card") ? this._randerDateTemplate() : this._randerListTemplate(), this.finished = !0, document.querySelector(".lds-ripple").classList.add("u-hide")) })) } _randerDateTemplate() { if (!this.subjects.length) return document.querySelector(".db--list").innerHTML = '<div class="db--empty"></div>'; const result = this.subjects.reduce(((result, item) => { const date = new Date(item.faves.createTime), key = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}`; return Object.prototype.hasOwnProperty.call(result, key) ? result[key].push(item) : result[key] = [item], result }), {}); let html = ""; for (let key in result) { const date = key.split("-"); html += `<div class="db--listBydate"><div class="db--titleDate JiEun"><div class="db--titleDate__day">${date[1]}</div><div class="db--titleDate__month">${date[0]}</div></div><div class="db--dateList__card">`, html += result[key].map((movie => `<div class="db--item"><img src="${movie.spec.dataType, movie.spec.poster}" referrerpolicy="unsafe-url" class="db--image"><div class="db--score JiEun">${movie.spec.score > 0 ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" ><path d="M12 20.1l5.82 3.682c1.066.675 2.37-.322 2.09-1.584l-1.543-6.926 5.146-4.667c.94-.85.435-2.465-.799-2.567l-6.773-.602L13.29.89a1.38 1.38 0 0 0-2.581 0l-2.65 6.53-6.774.602C.052 8.126-.453 9.74.486 10.59l5.147 4.666-1.542 6.926c-.28 1.262 1.023 2.26 2.09 1.585L12 20.099z"></path></svg>' + movie.spec.score : ""}${movie.spec.year > 0 ? " · " + movie.spec.year : ""}</div><div class="db--title"><a href="${movie.spec.link}" target="_blank">${movie.spec.name}</a></div>\n    \n    </div>`)).join(""), html += "</div></div>" } document.querySelector(".db--list").innerHTML = html } _randerListTemplate() { if (!this.subjects.length) return document.querySelector(".db--list").innerHTML = '<div class="db--empty"></div>'; document.querySelector(".db--list").innerHTML = this.subjects.map((item => `<div class="db--item"><img src="${item.spec.dataType, item.spec.poster}" referrerpolicy="unsafe-url" class="db--image"><div class="ipc-signpost JiEun">${item.faves.createTime}</div><div class="db--score JiEun">${item.spec.score > 0 ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" ><path d="M12 20.1l5.82 3.682c1.066.675 2.37-.322 2.09-1.584l-1.543-6.926 5.146-4.667c.94-.85.435-2.465-.799-2.567l-6.773-.602L13.29.89a1.38 1.38 0 0 0-2.581 0l-2.65 6.53-6.774.602C.052 8.126-.453 9.74.486 10.59l5.147 4.666-1.542 6.926c-.28 1.262 1.023 2.26 2.09 1.585L12 20.099z"></path></svg>' + item.spec.score : ""}${item.spec.year > 0 ? " · " + item.spec.year : ""}</div><div class="db--title"><a href="${item.spec.link}" target="_blank">${item.spec.name}</a></div>\n                </div>\n                </div>`)).join("") } _handleScroll() { window.addEventListener("scroll", (() => { var t = window.scrollY || window.pageYOffset; document.querySelector(".block-more").offsetTop + -window.innerHeight < t && document.querySelector(".lds-ripple").classList.contains("u-hide") && !this.finished && (document.querySelector(".lds-ripple").classList.remove("u-hide"), this.paged++, this._fetchData()) })) } _handleNavClick() { this.on("click", ".db--navItem", (t => { if (t.target.classList.contains("current")) return; this.genre = [], this.type = t.target.dataset.type, "book" != this.type ? (this._fetchGenres(), document.querySelector(".db--genres").classList.remove("u-hide")) : document.querySelector(".db--genres").classList.add("u-hide"), document.querySelector(".db--list").innerHTML = "", document.querySelector(".lds-ripple").classList.remove("u-hide"), document.querySelector(".db--navItem.current").classList.remove("current"); t.target.classList.add("current"), this.paged = 1, this.finished = !1, this.subjects = [], this._fetchData() })) } _create() { document.querySelector(".db--container") && (document.querySelector(".db--navItem.current") && (this.type = document.querySelector(".db--navItem.current").dataset.type), document.querySelector(".db--list").dataset.type && (this.type = document.querySelector(".db--list").dataset.type), "movie" == this.type && document.querySelector(".db--genres").classList.remove("u-hide"), this._fetchGenres(), this._fetchData(), this._handleScroll(), this._handleNavClick(), this._statusChange()) } } new HALO_DOUBAN;
+class HALO_DOUBAN {
+    constructor() {
+        this.ver = "1.2.4";
+        this.type = "movie";
+        this.status = "done";
+        this.finished = false;
+        this.paged = 1;
+        this.genre_list = [];
+        this.genre = [];
+        this.subjects = [];
+        this._init();
+    }
+
+    on(event, selector, callback) {
+        document.querySelectorAll(selector).forEach(item => {
+            item.addEventListener(event, callback);
+        });
+    }
+
+    _addSearchParams(url, params = {}) {
+        url = new URL(url, window.location.origin);
+        return new URL(`${url.origin}${url.pathname}?${new URLSearchParams([...Array.from(url.searchParams.entries()), ...Object.entries(params)])}`).href;
+    }
+
+    _init() {
+        if (!document.querySelector(".db--container")) return;
+        
+        this._translateNavItems();
+        
+        const currentNav = document.querySelector(".db--navItem.current") || document.querySelector(".filter-btn.current");
+        if (currentNav) {
+            this.type = currentNav.dataset.type;
+        }
+        
+        document.querySelector(".db--list").dataset.type && (this.type = document.querySelector(".db--list").dataset.type);
+        
+        if (this.type === "movie") {
+            this._fetchGenres();
+        }
+        
+        this._fetchData();
+        this._bindEvents();
+    }
+
+    _translateNavItems() {
+        const typeNames = {
+            movie: '电影',
+            book: '图书',
+            music: '音乐',
+            game: '游戏',
+            drama: '舞台剧'
+        };
+        document.querySelectorAll(".db--navItem").forEach(item => {
+            const type = item.dataset.type;
+            if (typeNames[type]) {
+                item.textContent = typeNames[type];
+            }
+        });
+    }
+
+    _bindEvents() {
+        this._handleNavClick();
+        this._statusChange();
+        this._handleGenreClick();
+        this._handleScroll();
+    }
+
+    _fetchGenres() {
+        document.querySelector(".db--genres").innerHTML = "";
+        fetch(this._addSearchParams("/apis/api.douban.moony.la/v1alpha1/doubanmovies/-/genres", { type: this.type }))
+            .then(response => response.json())
+            .then(data => {
+                if (data.length) {
+                    this.genre_list = data;
+                    this._renderGenre();
+                }
+            });
+        return true;
+    }
+
+    _handleNavClick() {
+        this.on("click", ".db--navItem, .filter-btn", (e) => {
+            const target = e.currentTarget;
+            if (target.classList.contains("current")) return;
+            
+            this.genre = [];
+            this.type = target.dataset.type;
+            
+            if (this.type !== "book") {
+                this._fetchGenres();
+                document.querySelector(".db--genres")?.classList.remove("u-hide");
+            } else {
+                document.querySelector(".db--genres")?.classList.add("u-hide");
+            }
+            
+            document.querySelector(".db--list").innerHTML = "";
+            this._showLoading();
+            
+            document.querySelector(".db--navItem.current")?.classList.remove("current");
+            document.querySelector(".filter-btn.current")?.classList.remove("current");
+            target.classList.add("current");
+            
+            this.paged = 1;
+            this.finished = false;
+            this.subjects = [];
+            this._fetchData();
+        });
+    }
+
+    _statusChange() {
+        this.on("click", ".db--typeItem", (e) => {
+            const target = e.currentTarget;
+            if (target.classList.contains("is-active")) return;
+            
+            document.querySelector(".db--list").innerHTML = "";
+            this._showLoading();
+            document.querySelector(".db--typeItem.is-active")?.classList.remove("is-active");
+            target.classList.add("is-active");
+            
+            this.status = target.dataset.status;
+            this.paged = 1;
+            this.finished = false;
+            this.subjects = [];
+            this._fetchData();
+        });
+    }
+
+    _handleGenreClick() {
+        this.on("click", ".db--genreItem", (e) => {
+            const target = e.currentTarget;
+            if (target.classList.contains("is-active")) {
+                const index = this.genre.indexOf(target.innerText);
+                if (index > -1) {
+                    target.classList.remove("is-active");
+                    this.genre.splice(index, 1);
+                }
+            } else {
+                target.classList.add("is-active");
+                this.genre.push(target.innerText);
+            }
+            
+            this.paged = 1;
+            this.finished = false;
+            this.subjects = [];
+            this._fetchData();
+        });
+    }
+
+    _renderGenre() {
+        const genresEl = document.querySelector(".db--genres");
+        if (!genresEl) return;
+        
+        genresEl.innerHTML = this.genre_list.map(item => 
+            `<span class="db--genreItem" data-genre="${item}">${item}</span>`
+        ).join("");
+        
+        this._handleGenreClick();
+    }
+
+    _showLoading() {
+        document.querySelector(".lds-ripple")?.classList.remove("u-hide");
+    }
+
+    _hideLoading() {
+        document.querySelector(".lds-ripple")?.classList.add("u-hide");
+    }
+
+    _fetchData() {
+        const url = new URL("/apis/api.douban.moony.la/v1alpha1/doubanmovies", window.location.origin);
+        url.searchParams.set("page", this.paged);
+        url.searchParams.set("size", "20");
+        url.searchParams.set("type", this.type);
+        url.searchParams.set("status", this.status);
+        
+        this.genre.forEach(g => url.searchParams.append("genre", g));
+        
+        fetch(url.href)
+            .then(response => response.json())
+            .then(data => {
+                if (data.items && data.items.length) {
+                    this.subjects = [...this.subjects, ...data.items];
+                    this._renderTemplate();
+                } else {
+                    if (!this.subjects.length) {
+                        this._renderEmpty();
+                    }
+                    this.finished = true;
+                }
+                this._hideLoading();
+            })
+            .catch(() => {
+                this._hideLoading();
+                if (!this.subjects.length) {
+                    this._renderEmpty();
+                }
+            });
+    }
+
+    _renderTemplate() {
+        const listEl = document.querySelector(".db--list");
+        if (!listEl) return;
+        this._renderListTemplate();
+    }
+
+    _renderEmpty() {
+        const listEl = document.querySelector(".db--list");
+        if (listEl) {
+            listEl.innerHTML = '<div class="db--empty">暂无数据</div>';
+        }
+    }
+
+    _getTypeIcon(type) {
+        const icons = {
+            movie: '<svg viewBox="0 0 24 24"><path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/></svg>',
+            book: '<svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>',
+            music: '<svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>',
+            game: '<svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>',
+            drama: '<svg viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM8 18H5v-2h3v2zm3-4H5v-2h6v2zm2-4H5V8h6v2zm2-4h-2v2h2V6z"/></svg>'
+        };
+        return icons[type] || icons.movie;
+    }
+
+    _getStatusLabel(status) {
+        const labels = {
+            done: '看过',
+            doing: '在看',
+            mark: '想看'
+        };
+        return labels[status] || '';
+    }
+
+    _renderListTemplate() {
+        const listEl = document.querySelector(".db--list");
+        if (!listEl || !this.subjects.length) return;
+        
+        listEl.innerHTML = this.subjects.map(item => {
+            const createTime = item.faves?.createTime ? new Date(item.faves.createTime) : null;
+            const timeStr = createTime ? `${createTime.getFullYear()}-${String(createTime.getMonth() + 1).padStart(2, '0')}-${String(createTime.getDate()).padStart(2, '0')}` : '';
+            
+            return `
+            <div class="db--item db--item__${item.spec.dataType || this.type}">
+                <div class="db--icon">
+                    ${this._getTypeIcon(item.spec.dataType || this.type)}
+                </div>
+                <div class="db--card">
+                    <div class="db--card-header">
+                        <span class="db--time-tag">${timeStr}</span>
+                        ${item.spec.score > 0 ? `
+                            <span class="db--score">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 20.1l5.82 3.682c1.066.675 2.37-.322 2.09-1.584l-1.543-6.926 5.146-4.667c.94-.85.435-2.465-.799-2.567l-6.773-.602L13.29.89a1.38 1.38 0 0 0-2.581 0l-2.65 6.53-6.774.602C.052 8.126-.453 9.74.486 10.59l5.147 4.666-1.542 6.926c-.28 1.262 1.023 2.26 2.09 1.585L12 20.099z"/>
+                                </svg>
+                                ${item.spec.score}
+                            </span>
+                        ` : ''}
+                    </div>
+                    <div class="db--content">
+                        <img src="${item.spec.poster}" referrerpolicy="unsafe-url" class="db--image" loading="lazy" alt="${item.spec.name}" />
+                        <div class="db--info">
+                            <div class="db--title">
+                                <a href="${item.spec.link}" target="_blank" rel="noopener">${item.spec.name}</a>
+                            </div>
+                            <div class="db--itemGenres">
+                                ${item.spec.genres ? item.spec.genres.map(g => `<span class="db--genre-tag">${g}</span>`).join('') : ''}
+                            </div>
+                            ${item.spec.cardSubtitle ? `<div class="db--desc">${item.spec.cardSubtitle}</div>` : ''}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `}).join("");
+    }
+
+    _handleScroll() {
+        let ticking = false;
+        window.addEventListener("scroll", () => {
+            if (ticking) return;
+            ticking = true;
+            
+            requestAnimationFrame(() => {
+                const blockMore = document.querySelector(".block-more");
+                if (!blockMore) {
+                    ticking = false;
+                    return;
+                }
+                
+                const rect = blockMore.getBoundingClientRect();
+                const isVisible = rect.top < window.innerHeight;
+                
+                if (isVisible && !this.finished && !document.querySelector(".lds-ripple")?.classList.contains("u-hide")) {
+                    this.paged++;
+                    this._fetchData();
+                }
+                
+                ticking = false;
+            });
+        });
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    window.haloDouban = new HALO_DOUBAN();
+});
+
+document.addEventListener("pjax:complete", () => {
+    if (document.querySelector(".db--container")) {
+        window.haloDouban = new HALO_DOUBAN();
+    }
+});
