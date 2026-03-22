@@ -246,10 +246,16 @@ class DoubanPage {
                             <div class="douban-tags">${tags}</div>
                             ${item.spec.cardSubtitle ? `<div class="douban-desc">${item.spec.cardSubtitle}</div>` : ""}
                         </div>
-                        <button class="douban-download" onclick="Douban.download('${item.spec.poster}', '${item.spec.name}')">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                            下载海报
-                        </button>
+                        <div class="douban-actions">
+                            <button class="douban-download" onclick="Douban.download('${item.spec.poster}', '${item.spec.name}')">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                下载海报
+                            </button>
+                            ${item.faves?.remark ? `<button class="douban-remark-btn" onclick="Douban.showRemarkModal('${this._escapeQuote(item.faves.remark)}', '${this._escapeQuote(item.spec.name)}')">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                我的短评
+                            </button>` : ''}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -277,6 +283,11 @@ class DoubanPage {
         };
         return icons[this.type] || icons.movie;
     }
+
+    _escapeQuote(str) {
+        if (!str) return '';
+        return str.replace(/'/g, "\\'").replace(/"/g, '\\"');
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => { window.doubanPage = new DoubanPage(); });
@@ -295,5 +306,21 @@ window.Douban = {
         } catch {
             window.open(url, "_blank");
         }
+    },
+
+    showRemarkModal(remark, name) {
+        const modal = document.getElementById('douban-remark-modal');
+        const nameEl = modal.querySelector('.douban-remark-name');
+        const body = modal.querySelector('.douban-remark-body');
+        nameEl.textContent = name;
+        body.textContent = remark;
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    },
+
+    closeRemarkModal() {
+        const modal = document.getElementById('douban-remark-modal');
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
     }
 };
