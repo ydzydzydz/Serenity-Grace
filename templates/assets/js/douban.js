@@ -252,7 +252,7 @@ class HALO_DOUBAN {
                                 </svg>
                                 ${item.spec.score}
                             </span>
-                        ` : ''}
+                        ` : `<span class="db--score">暂无评分</span>`}
                     </div>
                     <div class="db--content">
                         <a href="${item.spec.link}" target="_blank" rel="noopener" style="position: relative; display: inline-block;">
