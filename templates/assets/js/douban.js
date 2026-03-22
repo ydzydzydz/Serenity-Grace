@@ -81,7 +81,12 @@ class DoubanPage {
         this.genres = [];
         this.type = nav.dataset.type;
         this._toggleGenres();
-        if (this.type !== "book") this._fetchGenres();
+        if (this.type !== "book") {
+            this._fetchGenres();
+        } else {
+            const genresEl = document.querySelector(".douban-genres");
+            if (genresEl) genresEl.innerHTML = "";
+        }
         this._updateActive(nav);
     }
 
@@ -221,7 +226,7 @@ class DoubanPage {
         const time = item.faves?.createTime ? new Date(item.faves.createTime) : null;
         const date = time ? `${time.getFullYear()}-${String(time.getMonth() + 1).padStart(2, "0")}-${String(time.getDate()).padStart(2, "0")}` : "";
         const score = item.spec.score > 0 ? item.spec.score : null;
-        const tags = item.spec.genres?.map(g => `<span class="douban-tag">${g}</span>`).join("") || "";
+        const tags = item.spec.genres?.length ? item.spec.genres.map(g => `<span class="douban-tag">${g}</span>`).join("") : "<span class=\"douban-tag\">暂无标签</span>";
 
         return `
         <div class="douban-item">
@@ -242,6 +247,9 @@ class DoubanPage {
                         <div class="douban-info-main">
                             <div class="douban-name">
                                 <a href="${item.spec.link}" target="_blank" rel="noopener">${item.spec.name}</a>
+                            </div>
+                            <div class="douban-faves-score">
+                                ${Array.from({length: 5}, (_, i) => `<svg class="douban-star ${item.faves?.score && i < item.faves.score ? 'is-active' : ''}" width="14" height="14" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>`).join('')}
                             </div>
                             <div class="douban-tags">${tags}</div>
                             ${item.spec.cardSubtitle ? `<div class="douban-desc">${item.spec.cardSubtitle}</div>` : ""}

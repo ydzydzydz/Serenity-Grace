@@ -200,15 +200,14 @@
 .douban-info-main {
     flex: 1;
     min-width: 0;
-    padding: var(--space-3) 0 var(--space-3) var(--space-2);
+    padding: var(--space-2) 0 var(--space-2) var(--space-2);
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    gap: var(--space-2);
+    justify-content: center;
+    gap: var(--space-1);
 }
 
 .douban-name {
-    margin-bottom: var(--space-1);
     font-size: 1rem;
     font-weight: 600;
     line-height: 1.4;
@@ -223,12 +222,27 @@
 
 .douban-name a:hover { color: var(--color-accent); }
 
+.douban-faves-score {
+    display: flex;
+    gap: 2px;
+    margin-bottom: var(--space-1);
+}
+
+.douban-faves-score .douban-star {
+    fill: var(--color-border);
+    transition: all .2s;
+}
+
+.douban-faves-score .douban-star.is-active {
+    fill: #f5c518;
+}
+
 .douban-tags {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-1);
-    margin-bottom: var(--space-2);
     font-size: .7rem;
+    margin-bottom: var(--space-1);
 }
 
 .douban-tag {
@@ -340,8 +354,8 @@
     .douban-content { display: block; text-align: center; }
     .douban-poster-wrap { display: flex; justify-content: center; }
     .douban-poster { width: 100%; height: auto; aspect-ratio: 2/3; max-width: 200px; }
-    .douban-info { flex-direction: column; align-items: center; min-height: auto; margin-top: var(--space-3); }
-    .douban-info-main { text-align: center; }
+    .douban-info { flex-direction: column; align-items: center; min-height: auto; margin-top: var(--space-3); justify-content: center; }
+    .douban-info-main { text-align: center; align-items: center; }
     .douban-download, .douban-remark-btn { display: none; }
     .douban-name { font-size: .9rem; }
 }
