@@ -50,7 +50,8 @@
           ];
           // 使用和 categories.html 完全相同的数据源：categoryFinder.listAsTree()
           var rawIcons = /*[[${theme.config.basic != null ? theme.config.basic.categoryIcons : {}}]]*/ [];
-          var categoryIcons = rawIcons.map(function(item) { return item.realNode || item; }).filter(function(item) { return item && item.slug; });
+          if (!Array.isArray(rawIcons)) rawIcons = [];
+          var categoryIcons = rawIcons.map(function(item) { return item && (item.realNode || item); }).filter(function(item) { return item && item.slug; });
           var treeCategories = /*[[${categoryFinder.listAsTree()}]]*/ [];
           var iconHolder = document.querySelector('.category-title-icon');
           if (!iconHolder) return;

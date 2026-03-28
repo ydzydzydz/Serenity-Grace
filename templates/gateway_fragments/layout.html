@@ -26,6 +26,43 @@
         document.documentElement.setAttribute('data-theme', scheme);
       })();
     </script>
+    <script th:inline="javascript">
+      (function() {
+        var enabled = /*[[${theme.config.basic != null and theme.config.basic.typographyConfig != null and theme.config.basic.typographyConfig.enabled != null ? theme.config.basic.typographyConfig.enabled : false}]]*/ false;
+        if (!(enabled === true || enabled === 'true')) return;
+
+        var fontKey = /*[[${theme.config.basic != null and theme.config.basic.typographyConfig != null and theme.config.basic.typographyConfig.globalFont != null ? theme.config.basic.typographyConfig.globalFont : ''}]]*/ '';
+        var fontMap = {
+          noto_sans_sc: '"Noto Sans SC", sans-serif',
+          pingfang_sc: '"PingFang SC", sans-serif',
+          microsoft_yahei: '"Microsoft YaHei", sans-serif',
+          lxgw_wenkai: '"LXGW WenKai", serif',
+          smiley_sans: '"Smiley Sans Oblique", "LXGW WenKai", sans-serif',
+          zcool_kuaile: '"ZCOOL KuaiLe", "Comic Sans MS", cursive',
+          youyuan: '"YouYuan", "Microsoft YaHei", sans-serif',
+          styuanti: '"STYuanti", "PingFang SC", "Microsoft YaHei", sans-serif',
+          stkaiti: '"STKaiti", "KaiTi", serif',
+          stxingkai: '"STXingkai", "KaiTi", cursive',
+          harmonyos_sans_sc: '"HarmonyOS Sans SC", sans-serif',
+          misans: '"MiSans", sans-serif',
+          inter: '"Inter", sans-serif'
+        };
+
+        var resolved = '';
+        if (fontKey !== null && fontKey !== undefined) {
+          var key = String(fontKey).trim();
+          resolved = fontMap[key] || key;
+        }
+        if (!resolved) return;
+
+        var root = document.documentElement;
+        root.style.setProperty('--font-global', resolved);
+        root.style.setProperty('--font-sans', resolved);
+        root.style.setProperty('--font-serif', resolved);
+        root.style.setProperty('--font-rounded', resolved);
+        root.style.setProperty('--font-mono', resolved);
+      })();
+    </script>
 
     <th:block th:if="${head != null}">
       <th:block th:replace="${head}" />
