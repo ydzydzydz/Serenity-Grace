@@ -165,8 +165,20 @@
         <div class="link-slider-container">
           <div class="link-slider-bg"></div>
           <div class="link-slider-track">
-            <div class="link-slider-text">拖动滑块验证</div>
-            <div class="link-slider-button">></div>
+            <div class="link-slider-text" data-default-text="拖动滑块验证" data-success-text="验证通过">拖动滑块验证</div>
+            <div class="link-slider-button" role="button" tabindex="0" aria-label="拖动滑块完成验证">
+              <span class="slider-icon slider-icon-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M8 5L15 12L8 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  <path d="M12 5L19 12L12 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.78"></path>
+                </svg>
+              </span>
+              <span class="slider-icon slider-icon-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M6 12.5L10.2 16.5L18 8.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+              </span>
+            </div>
           </div>
         </div>
       </div>
