@@ -562,6 +562,7 @@
           <div class="memo-zone" data-aos="fade-up" th:if="${theme.config.home == null || theme.config.home.memoCardsConfig == null || theme.config.home.memoCardsConfig.showMemoCards == null || theme.config.home.memoCardsConfig.showMemoCards}" th:with="photoGroups = ${photoFinder != null ? photoFinder.groupBy() : null}">
             <div class="block-head">
               <h2 class="block-label">随想碎片</h2>
+              <span class="block-subtitle">拾光成句，心事留白</span>
               <div class="memo-nav">
                 <button class="memo-nav-btn memo-swiper-prev" aria-label="上一张">&lt;</button>
                 <button class="memo-nav-btn memo-swiper-next" aria-label="下一张">&gt;</button>

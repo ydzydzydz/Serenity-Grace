@@ -107,6 +107,29 @@
       <span class="footer-runtime-value" id="footer-runtime-hours">0</span><span> 小时 </span>
       <span class="footer-runtime-value" id="footer-runtime-mins">0</span><span> 分钟 </span>
       <span class="footer-runtime-value" id="footer-runtime-secs">0</span><span> 秒</span>
+
+      <th:block
+        th:if="${theme.config.footer != null && theme.config.footer.astraHubStatusConfig != null && theme.config.footer.astraHubStatusConfig.showAstraHubStatus == true}"
+        th:with="ahStatus = ${astraHubFinder != null ? astraHubFinder.footerStatus() : null}">
+        <span class="footer-runtime-separator footer-astrahub-separator"
+              th:if="${ahStatus != null && ahStatus.available}">|</span>
+        <span class="footer-astrahub-status"
+             th:if="${ahStatus != null && ahStatus.available}"
+             th:classappend="${ahStatus.healthy} ? ' is-online' : ' is-offline'">
+          <span class="footer-astrahub-icon-wrap" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" class="footer-astrahub-icon">
+              <polyline points="2 13 6 13 8.5 9 11.5 16 14.2 8 16.6 12 22 12"/>
+            </svg>
+          </span>
+          <span class="footer-astrahub-texts">
+            <span class="footer-astrahub-headline">
+              <strong th:text="${ahStatus.brand}">BLOGPLANET</strong>
+              <span th:text="${ahStatus.primarySuffix}"> 节点已启动</span>
+            </span>
+            <span class="footer-astrahub-subline" th:text="${ahStatus.secondaryLine}">已与主星建立实时链接 // 协议版本 v2.4.0</span>
+          </span>
+        </span>
+      </th:block>
     </div>
   </div>
 </footer>
