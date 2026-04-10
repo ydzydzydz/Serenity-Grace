@@ -64,8 +64,6 @@
 
 > 💡 欢迎使用 Serenity 主题的站长提交自己的站点，PR 即可~
 
----
-
 ## 👑 特别鸣谢
 
 <div align="center">

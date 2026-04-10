@@ -43,6 +43,54 @@ spec:
               value: auto
           help: 用户首次访问时的默认主题
         - $formkit: group
+          name: typographyConfig
+          label: 全站文字样式
+          value:
+            enabled: false
+            globalFont: ""
+          children:
+            - $formkit: switch
+              id: typography_enabled
+              name: enabled
+              label: 启用全站文字样式
+              value: false
+              help: 启用后统一应用一个全局字体（仅字体，不修改字号和字重）
+            - $formkit: select
+              name: globalFont
+              label: 全局字体（单选）
+              value: ""
+              if: $get(typography_enabled).value
+              options:
+                - label: 主题默认
+                  value: ""
+                - label: 思源黑体（Noto Sans SC）
+                  value: "noto_sans_sc"
+                - label: 苹方（PingFang SC）
+                  value: "pingfang_sc"
+                - label: 微软雅黑（Microsoft YaHei）
+                  value: "microsoft_yahei"
+                - label: 霞鹜文楷（可爱）
+                  value: "lxgw_wenkai"
+                - label: 得意黑（Smiley Sans，可爱）
+                  value: "smiley_sans"
+                - label: 站酷快乐体（可爱）
+                  value: "zcool_kuaile"
+                - label: 幼圆（可爱）
+                  value: "youyuan"
+                - label: 华文圆体（可爱）
+                  value: "styuanti"
+                - label: 华文楷体（手写）
+                  value: "stkaiti"
+                - label: 华文行楷（手写）
+                  value: "stxingkai"
+                - label: HarmonyOS Sans SC（鸿蒙）
+                  value: "harmonyos_sans_sc"
+                - label: MiSans（小米）
+                  value: "misans"
+                - label: Inter（英文）
+                  value: "inter"
+              help: 选择后会覆盖全站文字样式（包括正文、标题、代码等）
+        - $formkit: group
           name: watermarkConfig
           label: 水印设置
           value:
@@ -590,6 +638,8 @@ spec:
           value:
             showHeroBackground: true
             heroBackground: ""
+            heroBackgroundLight: ""
+            heroBackgroundDark: ""
             heroBackgroundApi: ""
             heroBackgroundApiMobile: ""
           children:
@@ -600,15 +650,20 @@ spec:
               value: true
               help: 在首页第一屏显示背景壁纸，滚动时逐渐模糊消失。提示：为避免影响观感，建议背景壁纸和装饰图片只启用其一
             - $formkit: attachment
-              name: heroBackground
-              label: 背景壁纸图片/视频
-              help: 上传首页背景壁纸（支持图片或 MP4/WebM 视频），留空则使用默认图片或 API
+              name: heroBackgroundLight
+              label: 亮色模式背景壁纸图片/视频
+              help: 上传亮色模式壁纸（支持图片或 MP4/WebM 视频），留空则默认使用 lightbg.webp
+              if: $get(home_bg_enabled).value
+            - $formkit: attachment
+              name: heroBackgroundDark
+              label: 暗色模式背景壁纸图片/视频
+              help: 上传暗色模式壁纸（支持图片或 MP4/WebM 视频），留空则默认使用 darkbg.webp
               if: $get(home_bg_enabled).value
             - $formkit: text
               name: heroBackgroundApi
               label: 桌面端背景 API
               value: ""
-              help: 背景 API 地址，每行一个图片 URL，支持 API 返回多行 URL，留空则使用上传的图片
+              help: 背景 API 地址，每行一个图片 URL，支持 API 返回多行 URL。设置后优先使用 API（覆盖亮/暗附件与默认图）
               if: $get(home_bg_enabled).value
             - $formkit: text
               name: heroBackgroundApiMobile
@@ -1001,6 +1056,18 @@ spec:
               help: 运行时间的起算日期，格式 YYYY-MM-DD，留空则使用建站年份的1月1日
               if: $get(footer_runtime_enabled).value
         - $formkit: group
+          name: astraHubStatusConfig
+          label: AstraHub 状态栏
+          value:
+            showAstraHubStatus: false
+          children:
+            - $formkit: switch
+              id: footer_astrahub_status_enabled
+              name: showAstraHubStatus
+              label: 显示 AstraHub 状态栏
+              value: false
+              help: 通过 AstraHub Finder API 在页脚显示主星连接状态
+        - $formkit: group
           name: rssConfig
           label: RSS 订阅
           value:
@@ -1348,6 +1415,18 @@ spec:
               value: "始建于 2024 年，纯个人兴趣建站，记录技术与生活。\n\n最初使用 Hexo 搭建，后迁移至 Halo，体验更现代化的博客系统。\n\n记录生活中的点滴，分享技术探索的心得，收藏有趣的发现，顺便当做备忘录。\n\n经历了多次改版、换主题、折腾服务器，一直靠热爱支撑，毕竟它承载着成长和回忆。"
               help: 显示在关于页面的"建站历程"部分
               if: $get(about_history_enabled).value
+        - $formkit: group
+          name: contactConfig
+          label: 联系组件
+          value:
+            showContact: true
+          children:
+            - $formkit: switch
+              id: about_contact_enabled
+              name: showContact
+              label: 显示联系组件
+              value: true
+              help: 控制关于页面底部“联系我”组件显示或隐藏
         - $formkit: group
           name: steamConfig
           label: Steam 游戏

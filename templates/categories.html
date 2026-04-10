@@ -58,7 +58,8 @@
     <!-- 根据分类slug匹配自定义图标 -->
     <script th:inline="javascript">
       var rawIcons = /*[[${theme.config.basic != null ? theme.config.basic.categoryIcons : {}}]]*/ [];
-      var categoryIcons = rawIcons.map(function(item) { return item.realNode; }).filter(function(item) { return item && item.slug; });
+      if (!Array.isArray(rawIcons)) rawIcons = [];
+      var categoryIcons = rawIcons.map(function(item) { return item && (item.realNode || item); }).filter(function(item) { return item && item.slug; });
       var categories = /*[[${categories}]]*/ [];
       
       document.querySelectorAll('.category-card').forEach(function(card, index) {

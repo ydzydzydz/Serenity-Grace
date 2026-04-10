@@ -42,21 +42,122 @@
                th:data-api-mobile="${theme.config.home.backgroundConfig.heroBackgroundApiMobile}" />
         </th:block>
         <th:block th:unless="${hasApi}">
-          <th:block th:with="bgUrl = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackground != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackground)) ? theme.config.home.backgroundConfig.heroBackground : '/themes/theme-Serenity/assets/public/labixiaoxi.webp'}">
-            <video th:if="${#strings.endsWith(#strings.toLowerCase(bgUrl), '.mp4') || #strings.endsWith(#strings.toLowerCase(bgUrl), '.webm')}" 
-                   th:src="${bgUrl}" 
-                   class="hero-background-img loaded"
-                   autoplay 
-                   loop 
-                   muted 
+          <th:block th:with="legacyBg = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackground != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackground)) ? theme.config.home.backgroundConfig.heroBackground : ''},
+                             lightBg = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackgroundLight != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackgroundLight)) ? theme.config.home.backgroundConfig.heroBackgroundLight : (!#strings.isEmpty(legacyBg) ? legacyBg : '/themes/theme-Serenity/assets/public/lightbg.webp')},
+                             darkBg = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackgroundDark != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackgroundDark)) ? theme.config.home.backgroundConfig.heroBackgroundDark : (!#strings.isEmpty(legacyBg) ? legacyBg : '/themes/theme-Serenity/assets/public/darkbg.webp')}">
+            <img class="hero-background-img hero-bg-theme-img"
+                 alt=""
+                 th:attr="data-light=${lightBg},data-dark=${darkBg},data-default-light=@{/assets/public/lightbg.webp},data-default-dark=@{/assets/public/darkbg.webp}" />
+            <video class="hero-background-img hero-bg-theme-video"
+                   style="display:none"
+                   autoplay
+                   loop
+                   muted
                    playsinline
+                   preload="metadata"
                    disablepictureinpicture></video>
-            <img th:unless="${#strings.endsWith(#strings.toLowerCase(bgUrl), '.mp4') || #strings.endsWith(#strings.toLowerCase(bgUrl), '.webm')}" 
-                 th:src="${bgUrl}" 
-                 alt="" 
-                 class="hero-background-img loaded" />
           </th:block>
         </th:block>
+        <script th:unless="${hasApi}">
+          (function() {
+            var root = document.documentElement;
+            var img = document.querySelector('.hero-bg-theme-img');
+            var video = document.querySelector('.hero-bg-theme-video');
+            if (!img || !video) return;
+
+            function isVideoUrl(url) {
+              if (!url) return false;
+              var pure = String(url).split('?')[0].split('#')[0].toLowerCase();
+              return pure.endsWith('.mp4') || pure.endsWith('.webm');
+            }
+
+            function currentTheme() {
+              return root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+            }
+
+            function themeUrl(theme) {
+              var selected = theme === 'light' ? img.getAttribute('data-light') : img.getAttribute('data-dark');
+              var fallback = defaultUrl(theme);
+              return selected || fallback || '';
+            }
+
+            function defaultUrl(theme) {
+              return theme === 'light' ? img.getAttribute('data-default-light') : img.getAttribute('data-default-dark');
+            }
+
+            function resetVideo() {
+              if (!video.getAttribute('src')) return;
+              video.pause();
+              video.removeAttribute('src');
+              video.removeAttribute('data-current-src');
+              try { video.load(); } catch (e) {}
+            }
+
+            function useImage(url) {
+              if (img.getAttribute('src') !== url) {
+                img.setAttribute('src', url);
+              }
+              img.style.display = 'block';
+              video.style.display = 'none';
+              resetVideo();
+            }
+
+            function useVideo(url) {
+              if (video.getAttribute('data-current-src') !== url) {
+                video.setAttribute('src', url);
+                video.setAttribute('data-current-src', url);
+                try { video.load(); } catch (e) {}
+              }
+              video.style.display = 'block';
+              img.style.display = 'none';
+            }
+
+            function applyThemeBackground() {
+              var theme = currentTheme();
+              var url = themeUrl(theme);
+              if (!url) return;
+              if (isVideoUrl(url)) {
+                useVideo(url);
+              } else {
+                useImage(url);
+              }
+            }
+
+            img.addEventListener('load', function() {
+              img.classList.add('loaded');
+            });
+
+            img.addEventListener('error', function() {
+              var fallback = defaultUrl(currentTheme());
+              if (fallback && img.getAttribute('src') !== fallback) {
+                img.setAttribute('src', fallback);
+              }
+            });
+
+            video.addEventListener('loadeddata', function() {
+              video.classList.add('loaded');
+            });
+
+            video.addEventListener('error', function() {
+              useImage(defaultUrl(currentTheme()));
+            });
+
+            applyThemeBackground();
+
+            if (window.__homeThemeBgObserver && typeof window.__homeThemeBgObserver.disconnect === 'function') {
+              window.__homeThemeBgObserver.disconnect();
+            }
+            window.__homeThemeBgObserver = new MutationObserver(function(mutations) {
+              for (var i = 0; i < mutations.length; i++) {
+                if (mutations[i].attributeName === 'data-theme') {
+                  applyThemeBackground();
+                  break;
+                }
+              }
+            });
+            window.__homeThemeBgObserver.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+          })();
+        </script>
       </div>
       
       <!-- 首页背景 API 脚本 -->
@@ -461,6 +562,7 @@
           <div class="memo-zone" data-aos="fade-up" th:if="${theme.config.home == null || theme.config.home.memoCardsConfig == null || theme.config.home.memoCardsConfig.showMemoCards == null || theme.config.home.memoCardsConfig.showMemoCards}" th:with="photoGroups = ${photoFinder != null ? photoFinder.groupBy() : null}">
             <div class="block-head">
               <h2 class="block-label">随想碎片</h2>
+              <span class="block-subtitle">拾光成句，心事留白</span>
               <div class="memo-nav">
                 <button class="memo-nav-btn memo-swiper-prev" aria-label="上一张">&lt;</button>
                 <button class="memo-nav-btn memo-swiper-next" aria-label="下一张">&gt;</button>
