@@ -288,12 +288,18 @@ spec:
           label: 登录设置
           value:
             hideLoginButton: false
+            enableGatewayWallpaper: false
           children:
             - $formkit: checkbox
               name: hideLoginButton
               label: 隐藏前台登录按钮
               value: false
               help: 开启后将隐藏导航栏右侧的登录按钮
+            - $formkit: switch
+              name: enableGatewayWallpaper
+              label: 启用登录页壁纸
+              value: false
+              help: 控制登录、注册、忘记密码等页面是否显示壁纸背景。开启后复用首页壁纸配置，默认关闭
 
     - group: hero
       label: 首页头部
@@ -1002,6 +1008,8 @@ spec:
             showPolice: false
             policeRecord: ""
             policeRecordUrl: "http://www.beian.gov.cn/portal/registerSystemInfo"
+            policeLogoUrl: ""
+            policeLogoSize: 20
           children:
             - $formkit: switch
               id: footer_police_enabled
@@ -1020,6 +1028,21 @@ spec:
               label: 公安备案链接
               value: "http://www.beian.gov.cn/portal/registerSystemInfo"
               help: 公安备案号的跳转链接，默认为公安备案查询页面
+              if: $get(footer_police_enabled).value
+            - $formkit: attachment
+              name: policeLogoUrl
+              label: 公安备案 Logo
+              value: ""
+              help: 从附件库选择公安备案 Logo 图片，留空则显示默认图标
+              if: $get(footer_police_enabled).value
+            - $formkit: number
+              name: policeLogoSize
+              label: 公安备案 Logo 大小
+              value: 20
+              min: 16
+              max: 40
+              step: 1
+              help: 公安备案 Logo 的显示长宽大小，单位为像素
               if: $get(footer_police_enabled).value
         - $formkit: group
           name: runtimeConfig
@@ -1049,17 +1072,17 @@ spec:
               help: 运行时间的起算日期，格式 YYYY-MM-DD，留空则使用建站年份的1月1日
               if: $get(footer_runtime_enabled).value
         - $formkit: group
-          name: astraHubStatusConfig
-          label: AstraHub 状态栏
+          name: onlineStatusConfig
+          label: 页脚在线状态
           value:
-            showAstraHubStatus: false
+            showOnlineStatus: true
           children:
             - $formkit: switch
-              id: footer_astrahub_status_enabled
-              name: showAstraHubStatus
-              label: 显示 AstraHub 状态栏
-              value: false
-              help: 通过 AstraHub Finder API 在页脚显示主星连接状态
+              id: footer_online_status_enabled
+              name: showOnlineStatus
+              label: 开启页脚在线状态
+              value: true
+              help: 依赖 online-user 在线统计插件，在页脚展示连接状态、当前在线人数和活跃页面数；关闭后将隐藏该区域，并停止请求插件公开接口。
         - $formkit: group
           name: rssConfig
           label: RSS 订阅

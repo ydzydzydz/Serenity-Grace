@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2" />
     <title th:text="${title}"></title>
     <link rel="icon" th:href="${site.favicon}" />
+    <meta th:if="${_csrf != null}" name="_csrf" th:content="${_csrf.token}" />
+    <meta th:if="${_csrf != null}" name="_csrf_header" th:content="${_csrf.headerName}" />
     
     <th:block th:replace="~{gateway_fragments/common::basicStaticResources}"></th:block>
     <link rel="stylesheet" th:href="@{/assets/css/base.css}" />
@@ -70,7 +72,7 @@
   </head>
   <body>
     <!-- 壁纸背景层（直接读取首页壁纸配置） -->
-    <th:block th:if="${theme.config.home == null || theme.config.home.backgroundConfig == null || theme.config.home.backgroundConfig.showHeroBackground == null || theme.config.home.backgroundConfig.showHeroBackground}"
+    <th:block th:if="${theme.config.basic != null && theme.config.basic.loginSettings != null && theme.config.basic.loginSettings.enableGatewayWallpaper != null && theme.config.basic.loginSettings.enableGatewayWallpaper}"
               th:with="hasApi = ${theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackgroundApi != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackgroundApi)}">
       <div class="gateway-wallpaper" id="gateway-wallpaper">
         <th:block th:if="${hasApi}">
@@ -181,5 +183,6 @@
       <span>Powered by <a href="https://halo.run" target="_blank" rel="noopener" style="pointer-events:auto;color:inherit;text-decoration:none;">Halo</a></span>
       <span th:if="${theme.config.basic?.siteInfo?.author}" th:text="'Theme by ' + ${theme.config.basic.siteInfo.author}"></span>
     </div>
+    <halo:footer />
   </body>
 </html>

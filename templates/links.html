@@ -44,10 +44,17 @@
                      th:alt="${link.spec.displayName}"
                      loading="lazy"
                      referrerpolicy="no-referrer"
-                     onerror="this.onerror=null;this.src='https://api.dicebear.com/7.x/initials/svg?seed='+encodeURIComponent(this.alt||'L');" />
-                <div th:unless="${link.spec.logo}" 
-                     class="link-avatar-placeholder" 
-                     th:text="${#strings.substring(link.spec.displayName, 0, 1)}">L</div>
+                     onerror="this.onerror=null;this.style.display='none';if(this.nextElementSibling){this.nextElementSibling.style.display='flex';}" />
+                <div th:if="${link.spec.logo}" class="link-avatar-placeholder" style="display:none;" aria-hidden="true">
+                  <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="currentColor" d="M938.666667 512v307.456a73.685333 73.685333 0 0 1-106.666667 65.877333 123.349333 123.349333 0 0 0-123.562667 7.68 123.392 123.392 0 0 1-136.874666 0l-15.061334-9.984a80.256 80.256 0 0 0-89.002666 0l-15.061334 10.026667a123.392 123.392 0 0 1-136.874666 0 123.349333 123.349333 0 0 0-123.605334-7.68A73.685333 73.685333 0 0 1 85.333333 819.413333V512C85.333333 276.352 276.352 85.333333 512 85.333333s426.666667 191.018667 426.666667 426.666667zM403.072 614.314667a32 32 0 1 0-38.144 51.370666A246.016 246.016 0 0 0 512 714.666667a246.016 246.016 0 0 0 147.072-48.981334 32 32 0 1 0-38.144-51.370666A182.058667 182.058667 0 0 1 512 650.666667a182.058667 182.058667 0 0 1-108.928-36.352zM682.666667 405.333333c0-35.328-19.114667-64-42.666667-64s-42.666667 28.672-42.666667 64 19.114667 64 42.666667 64 42.666667-28.672 42.666667-64zM384 469.333333c23.552 0 42.666667-28.672 42.666667-64S407.552 341.333333 384 341.333333s-42.666667 28.672-42.666667 64 19.114667 64 42.666667 64z"/>
+                  </svg>
+                </div>
+                <div th:unless="${link.spec.logo}" class="link-avatar-placeholder" aria-hidden="true">
+                  <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="currentColor" d="M938.666667 512v307.456a73.685333 73.685333 0 0 1-106.666667 65.877333 123.349333 123.349333 0 0 0-123.562667 7.68 123.392 123.392 0 0 1-136.874666 0l-15.061334-9.984a80.256 80.256 0 0 0-89.002666 0l-15.061334 10.026667a123.392 123.392 0 0 1-136.874666 0 123.349333 123.349333 0 0 0-123.605334-7.68A73.685333 73.685333 0 0 1 85.333333 819.413333V512C85.333333 276.352 276.352 85.333333 512 85.333333s426.666667 191.018667 426.666667 426.666667zM403.072 614.314667a32 32 0 1 0-38.144 51.370666A246.016 246.016 0 0 0 512 714.666667a246.016 246.016 0 0 0 147.072-48.981334 32 32 0 1 0-38.144-51.370666A182.058667 182.058667 0 0 1 512 650.666667a182.058667 182.058667 0 0 1-108.928-36.352zM682.666667 405.333333c0-35.328-19.114667-64-42.666667-64s-42.666667 28.672-42.666667 64 19.114667 64 42.666667 64 42.666667-28.672 42.666667-64zM384 469.333333c23.552 0 42.666667-28.672 42.666667-64S407.552 341.333333 384 341.333333s-42.666667 28.672-42.666667 64 19.114667 64 42.666667 64z"/>
+                  </svg>
+                </div>
               </div>
               <div class="link-info">
                 <span class="link-name" th:text="${link.spec.displayName}">链接名称</span>
@@ -157,29 +164,22 @@
   <div id="linkConfirmModal" class="link-confirm-modal">
     <div class="link-confirm-content">
       <div class="link-confirm-header">
-        <span>即将离开本站访问：<strong class="link-target-name"></strong></span>
-        <button class="link-confirm-close" onclick="closeLinkConfirm()" aria-label="关闭">×</button>
+        <span>即将离开本站访问，<strong class="link-target-name"></strong></span>
+        <button class="link-confirm-close" onclick="closeLinkConfirm()" aria-label="关闭">&times;</button>
       </div>
       <div class="link-confirm-body">
-        <p class="link-warning-text">本站不对外部链接内容负责，请注意甄别信息真伪</p>
-        <div class="link-slider-container">
-          <div class="link-slider-bg"></div>
-          <div class="link-slider-track">
-            <div class="link-slider-text" data-default-text="拖动滑块验证" data-success-text="验证通过">拖动滑块验证</div>
-            <div class="link-slider-button" role="button" tabindex="0" aria-label="拖动滑块完成验证">
-              <span class="slider-icon slider-icon-arrow" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M8 5L15 12L8 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
-                  <path d="M12 5L19 12L12 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.78"></path>
-                </svg>
-              </span>
-              <span class="slider-icon slider-icon-check" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M6 12.5L10.2 16.5L18 8.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path>
-                </svg>
-              </span>
-            </div>
-          </div>
+        <p class="link-warning-text">本站不对外部链接内容负责，请注意甄别信息真伪。</p>
+        <div class="link-confirm-actions">
+          <button class="link-confirm-cta" type="button" onclick="confirmLinkVisit()" aria-label="确认前往外部站点">
+            <span class="link-confirm-cta-label">继续前往</span>
+            <span class="link-confirm-cta-icon" aria-hidden="true">
+              <svg viewBox="0 0 66 43" fill="none">
+                <path class="link-confirm-arrow link-confirm-arrow-one" d="M2 3L16 21.5L2 40"></path>
+                <path class="link-confirm-arrow link-confirm-arrow-two" d="M24 3L38 21.5L24 40"></path>
+                <path class="link-confirm-arrow link-confirm-arrow-three" d="M46 3L60 21.5L46 40"></path>
+              </svg>
+            </span>
+          </button>
         </div>
       </div>
     </div>
