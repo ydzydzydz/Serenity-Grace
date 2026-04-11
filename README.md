@@ -30,7 +30,7 @@
 
 <div align="center">
 
-[![在线预览](https://img.shields.io/badge/🌐_serenity.aobp.cn-点击访问-F596AA?style=for-the-badge&logoColor=white)](https://serenity.aobp.cn/)
+[![在线预览](https://img.shields.io/badge/🌐_www.aobp.cn-点击访问-F596AA?style=for-the-badge&logoColor=white)](https://www.aobp.cn/)
 
 > 💡 建议使用无痕浏览模式访问，体验完整的欢迎页和首次访问效果
 
@@ -292,6 +292,16 @@
     <td align="center">🔌</td>
     <td><a href="https://github.com/YunJian101/Halo-Plugin-Dicebear-Avatar">Dicebear 头像</a></td>
     <td>评论随机头像</td>
+  </tr>
+  <tr>
+    <td align="center">🔌</td>
+    <td>Passkey 通行密钥</td>
+    <td>登录页快速关联入口 + 退出页当前设备绑定，适配 Halo Passkey/WebAuthn 插件</td>
+  </tr>
+  <tr>
+    <td align="center">🔌</td>
+    <td>在线用户统计</td>
+    <td>依赖 online-user 在线统计插件，在页脚展示连接状态、当前在线人数和活跃页面数；关闭后将隐藏该区域，并停止请求插件公开接口。</td>
   </tr>
   <tr>
     <td align="center">🔌</td>

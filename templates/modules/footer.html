@@ -1,58 +1,72 @@
-<th:block xmlns:th="https://www.thymeleaf.org">
+﻿<th:block xmlns:th="https://www.thymeleaf.org">
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-content">
       <div class="footer-left">
         <div class="footer-copyright">
           <span class="footer-copyright-icon">©</span>
-          <span th:if="${theme.config.footer != null && theme.config.footer.runtimeConfig != null && theme.config.footer.runtimeConfig.startYear != null && !#strings.isEmpty(theme.config.footer.runtimeConfig.startYear)}" 
-                th:text="${theme.config.footer.runtimeConfig.startYear + (#temporals.format(#temporals.createNow(), 'yyyy') != theme.config.footer.runtimeConfig.startYear ? ' - ' + #temporals.format(#temporals.createNow(), 'yyyy') : '')}">2024</span>
-          <span th:unless="${theme.config.footer != null && theme.config.footer.runtimeConfig != null && theme.config.footer.runtimeConfig.startYear != null && !#strings.isEmpty(theme.config.footer.runtimeConfig.startYear)}" 
+          <span th:if="${theme.config.footer != null && theme.config.footer.runtimeConfig != null && theme.config.footer.runtimeConfig.startYear != null && !#strings.isEmpty(theme.config.footer.runtimeConfig.startYear)}"
+                th:text="${theme.config.footer.runtimeConfig.startYear + (#temporals.format(#temporals.createNow(), 'yyyy') != theme.config.footer.runtimeConfig.startYear ? ' - ' + #temporals.format(#temporals.createNow(), 'yyyy') : '')}">2024 - 2026</span>
+          <span th:unless="${theme.config.footer != null && theme.config.footer.runtimeConfig != null && theme.config.footer.runtimeConfig.startYear != null && !#strings.isEmpty(theme.config.footer.runtimeConfig.startYear)}"
                 th:text="${#temporals.format(#temporals.createNow(), 'yyyy')}">2026</span>
-             <a th:if="${site.url != null}" 
-                th:href="${site.url}" 
-                th:text="${theme.config.basic != null and theme.config.basic.siteInfo != null and theme.config.basic.siteInfo.title != null ? theme.config.basic.siteInfo.title : site.title}">博客</a>
-             <span th:unless="${site.url != null}" 
-                   th:text="${theme.config.basic != null and theme.config.basic.siteInfo != null and theme.config.basic.siteInfo.title != null ? theme.config.basic.siteInfo.title : site.title}">博客</span>
+          <a th:if="${site.url != null && !#strings.isEmpty(site.url)}"
+             th:href="${site.url}"
+             th:text="${theme.config.basic != null and theme.config.basic.siteInfo != null and theme.config.basic.siteInfo.title != null ? theme.config.basic.siteInfo.title : site.title}">Site Title</a>
+          <span th:unless="${site.url != null && !#strings.isEmpty(site.url)}"
+                th:text="${theme.config.basic != null and theme.config.basic.siteInfo != null and theme.config.basic.siteInfo.title != null ? theme.config.basic.siteInfo.title : site.title}">Site Title</span>
           <span>版权所有</span>
           <th:block th:if="${theme.config.footer != null && ((theme.config.footer.privacyConfig != null && theme.config.footer.privacyConfig.showPrivacy == true) || (theme.config.footer.termsConfig != null && theme.config.footer.termsConfig.showTerms == true))}">
             <span class="footer-legal-separator">|</span>
-            <a th:if="${theme.config.footer.privacyConfig != null && theme.config.footer.privacyConfig.showPrivacy == true}" href="javascript:void(0)" class="footer-legal-link" onclick="openLegalModal('privacy')">隐私政策</a>
-            <span th:if="${theme.config.footer.privacyConfig != null && theme.config.footer.privacyConfig.showPrivacy == true && theme.config.footer.termsConfig != null && theme.config.footer.termsConfig.showTerms == true}" class="footer-legal-separator">|</span>
-            <a th:if="${theme.config.footer.termsConfig != null && theme.config.footer.termsConfig.showTerms == true}" href="javascript:void(0)" class="footer-legal-link" onclick="openLegalModal('terms')">服务条款</a>
+            <a th:if="${theme.config.footer.privacyConfig != null && theme.config.footer.privacyConfig.showPrivacy == true}"
+               href="javascript:void(0)"
+               class="footer-legal-link"
+               onclick="openLegalModal('privacy')">隐私协议</a>
+            <span th:if="${theme.config.footer.privacyConfig != null && theme.config.footer.privacyConfig.showPrivacy == true && theme.config.footer.termsConfig != null && theme.config.footer.termsConfig.showTerms == true}"
+                  class="footer-legal-separator">|</span>
+            <a th:if="${theme.config.footer.termsConfig != null && theme.config.footer.termsConfig.showTerms == true}"
+               href="javascript:void(0)"
+               class="footer-legal-link"
+               onclick="openLegalModal('terms')">服务条款</a>
           </th:block>
         </div>
-        
-        <div class="footer-beian" th:if="${(theme.config.footer != null && theme.config.footer.icpConfig != null && theme.config.footer.icpConfig.icp != null && !#strings.isEmpty(theme.config.footer.icpConfig.icp)) || (theme.config.footer != null && theme.config.footer.policeConfig != null && theme.config.footer.policeConfig.policeRecord != null && !#strings.isEmpty(theme.config.footer.policeConfig.policeRecord))}">
-          <a th:if="${theme.config.footer != null && theme.config.footer.icpConfig != null && theme.config.footer.icpConfig.icp != null && !#strings.isEmpty(theme.config.footer.icpConfig.icp)}" 
-             th:href="${theme.config.footer.icpConfig.icpUrl ?: 'https://beian.miit.gov.cn/'}" 
-             target="_blank" 
+
+        <div class="footer-beian"
+             th:if="${(theme.config.footer != null && theme.config.footer.icpConfig != null && theme.config.footer.icpConfig.showIcp != null && theme.config.footer.icpConfig.showIcp && theme.config.footer.icpConfig.icp != null && !#strings.isEmpty(theme.config.footer.icpConfig.icp)) || (theme.config.footer != null && theme.config.footer.policeConfig != null && theme.config.footer.policeConfig.showPolice != null && theme.config.footer.policeConfig.showPolice && theme.config.footer.policeConfig.policeRecord != null && !#strings.isEmpty(theme.config.footer.policeConfig.policeRecord))}">
+          <a th:if="${theme.config.footer != null && theme.config.footer.icpConfig != null && theme.config.footer.icpConfig.showIcp != null && theme.config.footer.icpConfig.showIcp && theme.config.footer.icpConfig.icp != null && !#strings.isEmpty(theme.config.footer.icpConfig.icp)}"
+             th:href="${theme.config.footer.icpConfig.icpUrl ?: 'https://beian.miit.gov.cn/'}"
+             target="_blank"
              rel="noopener"
              class="footer-beian-link">
-             <!-- 下方img标签根据喜好注释 -->
             <img th:with="customLogo=${theme.config.footer.icpConfig.icpLogoUrl},logoSize=${theme.config.footer.icpConfig.icpLogoSize} ?: 20"
                  th:src="${not #strings.isEmpty(customLogo) ? customLogo : '/themes/theme-Serenity/assets/public/icpb.webp'}"
-                 class="footer-beian-icon" alt="ICP备案"
+                 class="footer-beian-icon"
+                 alt="ICP 备案图标"
                  th:style="'width:' + ${logoSize} + 'px;height:' + ${logoSize} + 'px;object-fit:contain;flex-shrink:0;display:inline-block;vertical-align:middle;'" />
-            <span th:text="${theme.config.footer.icpConfig.icp}">备案号</span>
+            <span th:text="${theme.config.footer.icpConfig.icp}">ICP备案号</span>
           </a>
-          
-          <span th:if="${theme.config.footer != null && theme.config.footer.icpConfig != null && theme.config.footer.icpConfig.icp != null && !#strings.isEmpty(theme.config.footer.icpConfig.icp) && theme.config.footer.policeConfig != null && theme.config.footer.policeConfig.policeRecord != null && !#strings.isEmpty(theme.config.footer.policeConfig.policeRecord)}" class="footer-beian-separator">|</span>
-          
-          <a th:if="${theme.config.footer != null && theme.config.footer.policeConfig != null && theme.config.footer.policeConfig.policeRecord != null && !#strings.isEmpty(theme.config.footer.policeConfig.policeRecord)}" 
-             th:href="${theme.config.footer.policeConfig.policeRecordUrl ?: 'http://www.beian.gov.cn/portal/registerSystemInfo'}" 
-             target="_blank" 
+
+          <span th:if="${theme.config.footer != null && theme.config.footer.icpConfig != null && theme.config.footer.icpConfig.showIcp != null && theme.config.footer.icpConfig.showIcp && theme.config.footer.icpConfig.icp != null && !#strings.isEmpty(theme.config.footer.icpConfig.icp) && theme.config.footer.policeConfig != null && theme.config.footer.policeConfig.showPolice != null && theme.config.footer.policeConfig.showPolice && theme.config.footer.policeConfig.policeRecord != null && !#strings.isEmpty(theme.config.footer.policeConfig.policeRecord)}"
+                class="footer-beian-separator">|</span>
+
+          <a th:if="${theme.config.footer != null && theme.config.footer.policeConfig != null && theme.config.footer.policeConfig.showPolice != null && theme.config.footer.policeConfig.showPolice && theme.config.footer.policeConfig.policeRecord != null && !#strings.isEmpty(theme.config.footer.policeConfig.policeRecord)}"
+             th:href="${theme.config.footer.policeConfig.policeRecordUrl ?: 'http://www.beian.gov.cn/portal/registerSystemInfo'}"
+             target="_blank"
              rel="noopener"
-             class="footer-beian-link footer-beian-link-plain">
+             class="footer-beian-link">
+            <img th:with="customLogo=${theme.config.footer.policeConfig.policeLogoUrl},logoSize=${theme.config.footer.policeConfig.policeLogoSize} ?: 20"
+                 th:src="${not #strings.isEmpty(customLogo) ? customLogo : '/themes/theme-Serenity/assets/public/ics6.webp'}"
+                 class="footer-beian-icon"
+                 alt="公安备案图标"
+                 th:style="'width:' + ${logoSize} + 'px;height:' + ${logoSize} + 'px;object-fit:contain;flex-shrink:0;display:inline-block;vertical-align:middle;'" />
             <span th:text="${theme.config.footer.policeConfig.policeRecord}">公安备案号</span>
           </a>
         </div>
       </div>
-      
+
       <div class="footer-right">
         <div class="footer-links">
-          <a th:if="${theme.config.footer == null || theme.config.footer.rssConfig == null || theme.config.footer.rssConfig.showRss == null || theme.config.footer.rssConfig.showRss}" 
-             th:href="@{/rss.xml}" 
+          <a th:if="${theme.config.footer == null || theme.config.footer.rssConfig == null || theme.config.footer.rssConfig.showRss == null || theme.config.footer.rssConfig.showRss}"
+             th:href="@{/rss.xml}"
              class="footer-link">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
               <path d="M4 11a9 9 0 0 1 9 9"/>
@@ -61,9 +75,9 @@
             </svg>
             <span>RSS 订阅</span>
           </a>
-          <a th:if="${theme.config.footer == null || theme.config.footer.poweredByConfig == null || theme.config.footer.poweredByConfig.showPoweredBy == null || theme.config.footer.poweredByConfig.showPoweredBy}" 
-             href="https://halo.run" 
-             target="_blank" 
+          <a th:if="${theme.config.footer == null || theme.config.footer.poweredByConfig == null || theme.config.footer.poweredByConfig.showPoweredBy == null || theme.config.footer.poweredByConfig.showPoweredBy}"
+             href="https://halo.run"
+             target="_blank"
              rel="noopener"
              class="footer-link">
             <span>由</span>
@@ -77,16 +91,16 @@
                rel="noopener"
                class="footer-link footer-provider">
               <span>本站由</span>
-              <img th:src="${theme.config.footer.providerConfig.providerLogo}" 
-                   th:alt="${theme.config.footer.providerConfig.providerName ?: '服务商'}" 
+              <img th:src="${theme.config.footer.providerConfig.providerLogo}"
+                   th:alt="${theme.config.footer.providerConfig.providerName ?: '服务商 Logo'}"
                    class="footer-provider-logo" />
               <span>提供支持</span>
             </a>
             <span th:unless="${theme.config.footer.providerConfig.providerUrl != null && !#strings.isEmpty(theme.config.footer.providerConfig.providerUrl)}"
                   class="footer-link footer-provider">
               <span>本站由</span>
-              <img th:src="${theme.config.footer.providerConfig.providerLogo}" 
-                   th:alt="${theme.config.footer.providerConfig.providerName ?: '服务商'}" 
+              <img th:src="${theme.config.footer.providerConfig.providerLogo}"
+                   th:alt="${theme.config.footer.providerConfig.providerName ?: '服务商 Logo'}"
                    class="footer-provider-logo" />
               <span>提供支持</span>
             </span>
@@ -95,39 +109,33 @@
       </div>
     </div>
 
-    <div class="footer-runtime" 
-         th:if="${theme.config.footer != null && theme.config.footer.runtimeConfig != null && theme.config.footer.runtimeConfig.showRuntime == true}"
-         th:attr="data-start=${theme.config.footer.runtimeConfig.runtimeStartDate ?: (theme.config.footer.runtimeConfig.startYear ?: '2024') + '-01-01'}">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-        <circle cx="12" cy="12" r="10"/>
-        <polyline points="12 6 12 12 16 14"/>
-      </svg>
-      <span>本站已运行 </span>
-      <span class="footer-runtime-value" id="footer-runtime-days">0</span><span> 天 </span>
-      <span class="footer-runtime-value" id="footer-runtime-hours">0</span><span> 小时 </span>
-      <span class="footer-runtime-value" id="footer-runtime-mins">0</span><span> 分钟 </span>
-      <span class="footer-runtime-value" id="footer-runtime-secs">0</span><span> 秒</span>
+    <div class="footer-runtime"
+         th:if="${(theme.config.footer != null && theme.config.footer.runtimeConfig != null && theme.config.footer.runtimeConfig.showRuntime == true) || (theme.config.footer != null && (theme.config.footer.onlineStatusConfig == null || theme.config.footer.onlineStatusConfig.showOnlineStatus == null || theme.config.footer.onlineStatusConfig.showOnlineStatus == true))}"
+         th:attr="data-start=${theme.config.footer != null && theme.config.footer.runtimeConfig != null ? (theme.config.footer.runtimeConfig.runtimeStartDate ?: (theme.config.footer.runtimeConfig.startYear ?: '2024') + '-01-01') : ''}">
+      <th:block th:if="${theme.config.footer != null && theme.config.footer.runtimeConfig != null && theme.config.footer.runtimeConfig.showRuntime == true}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <span>本站已运行</span>
+        <span class="footer-runtime-value" id="footer-runtime-days">0</span><span>天</span>
+        <span class="footer-runtime-value" id="footer-runtime-hours">0</span><span>小时</span>
+        <span class="footer-runtime-value" id="footer-runtime-mins">0</span><span>分钟</span>
+        <span class="footer-runtime-value" id="footer-runtime-secs">0</span><span>秒</span>
+      </th:block>
 
-      <th:block
-        th:if="${theme.config.footer != null && theme.config.footer.astraHubStatusConfig != null && theme.config.footer.astraHubStatusConfig.showAstraHubStatus == true}"
-        th:with="ahStatus = ${astraHubFinder != null ? astraHubFinder.footerStatus() : null}">
-        <span class="footer-runtime-separator footer-astrahub-separator"
-              th:if="${ahStatus != null && ahStatus.available}">|</span>
-        <span class="footer-astrahub-status"
-             th:if="${ahStatus != null && ahStatus.available}"
-             th:classappend="${ahStatus.healthy} ? ' is-online' : ' is-offline'">
-          <span class="footer-astrahub-icon-wrap" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" class="footer-astrahub-icon">
+      <th:block th:if="${theme.config.footer != null && (theme.config.footer.onlineStatusConfig == null || theme.config.footer.onlineStatusConfig.showOnlineStatus == null || theme.config.footer.onlineStatusConfig.showOnlineStatus == true)}">
+        <span class="footer-runtime-separator footer-online-separator"
+              th:if="${theme.config.footer.runtimeConfig != null && theme.config.footer.runtimeConfig.showRuntime == true}">|</span>
+        <span class="footer-online-status is-connecting"
+              data-online-footer-status>
+          <span class="footer-online-icon-wrap" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" class="footer-online-icon">
               <polyline points="2 13 6 13 8.5 9 11.5 16 14.2 8 16.6 12 22 12"/>
             </svg>
           </span>
-          <span class="footer-astrahub-texts">
-            <span class="footer-astrahub-headline">
-              <strong th:text="${ahStatus.brand}">BLOGPLANET</strong>
-              <span th:text="${ahStatus.primarySuffix}"> 节点已启动</span>
-            </span>
-            <span class="footer-astrahub-subline" th:text="${ahStatus.secondaryLine}">已与主星建立实时链接 // 协议版本 v2.4.0</span>
-          </span>
+          <span class="footer-online-label">看板娘</span>
+          <span class="footer-online-detail" data-online-detail>赶来中...</span>
         </span>
       </th:block>
     </div>
@@ -138,12 +146,16 @@
 (function() {
   var el = document.querySelector('.footer-runtime');
   if (!el) return;
-  var start = new Date(el.getAttribute('data-start')).getTime();
+  var startValue = el.getAttribute('data-start');
+  if (!startValue) return;
+  var start = new Date(startValue).getTime();
   if (isNaN(start)) return;
   var d = document.getElementById('footer-runtime-days');
   var h = document.getElementById('footer-runtime-hours');
   var m = document.getElementById('footer-runtime-mins');
   var s = document.getElementById('footer-runtime-secs');
+  if (!d || !h || !m || !s) return;
+
   function tick() {
     var diff = Math.floor((Date.now() - start) / 1000);
     if (diff < 0) diff = 0;
@@ -152,23 +164,187 @@
     m.textContent = Math.floor((diff % 3600) / 60);
     s.textContent = diff % 60;
   }
+
   tick();
-  setInterval(tick, 1000);
+  window.setInterval(tick, 1000);
 })();
 </script>
+<script>
+(function() {
+  var root = document.querySelector('[data-online-footer-status]');
+  if (!root) return;
+
+  var detailNode = root.querySelector('[data-online-detail]');
+  var summaryUrl = '/apis/online-user.zyx2012.cn/v1alpha1/stats/summary';
+  var onlineState = {
+    total: null,
+    activePages: null
+  };
+  var pluginReady = false;
+  var pollTimer = null;
+  var offlineTimer = null;
+
+  function setDetail(content, isHtml) {
+    if (!detailNode) {
+      return;
+    }
+    if (isHtml) {
+      detailNode.innerHTML = content;
+      return;
+    }
+    detailNode.textContent = content;
+  }
+
+  function setMessage(state) {
+    if (state === 'online') {
+      if ((onlineState.total == null || onlineState.total <= 0) && (onlineState.activePages == null || onlineState.activePages <= 0)) {
+        setDetail('已到岗 · 暂时还没有小伙伴来串门', false);
+        return;
+      }
+      var totalText = onlineState.total == null ? '--' : String(onlineState.total);
+      var pagesText = onlineState.activePages == null ? '--' : String(onlineState.activePages);
+      setDetail('已到岗 · <span class="footer-runtime-value">' + totalText + '</span><span> 位小伙伴正在逛 </span><span class="footer-runtime-value">' + pagesText + '</span><span> 个页面</span>', true);
+      return;
+    }
+    if (state === 'connecting') {
+      setDetail('赶来中...', false);
+      return;
+    }
+    setDetail('啊哦，离线咯 · 暂时收不到动静', false);
+  }
+
+  function setConnectionState(state) {
+    root.classList.remove('is-online', 'is-offline', 'is-connecting');
+    root.classList.add('is-' + state);
+    setMessage(state);
+  }
+
+  function normalizeCount(value) {
+    var numericValue = Number(value);
+    if (!isFinite(numericValue) || numericValue < 0) {
+      return null;
+    }
+    return Math.round(numericValue);
+  }
+
+  function applyPayload(payload) {
+    if (!payload || typeof payload !== 'object') {
+      return;
+    }
+
+    var source = payload;
+    if (payload.data && typeof payload.data === 'object') {
+      source = payload.data;
+    }
+
+    onlineState.total = normalizeCount(source.total);
+    onlineState.activePages = normalizeCount(source.activePages);
+  }
+
+  function parseSummary(text) {
+    if (!text || typeof text !== 'string') {
+      return null;
+    }
+    try {
+      return JSON.parse(text);
+    } catch (_error) {
+      return null;
+    }
+  }
+
+  function fetchSummary() {
+    if (!window.fetch) return;
+    window.fetch(summaryUrl, { credentials: 'same-origin' })
+      .then(function(response) {
+        return response.text().then(function(text) {
+          if (!response.ok) {
+            var error = new Error('status ' + response.status);
+            error.status = response.status;
+            throw error;
+          }
+          var payload = parseSummary(text);
+          if (!payload) {
+            throw new Error('invalid json');
+          }
+          return payload;
+        });
+      })
+      .then(function(payload) {
+        applyPayload(payload);
+        setConnectionState('online');
+      })
+      .catch(function(error) {
+        onlineState.total = null;
+        onlineState.activePages = null;
+        setConnectionState('offline');
+
+        if (error && error.status === 404) {
+          pluginReady = false;
+          stopPolling();
+        }
+      });
+  }
+
+  function stopPolling() {
+    if (pollTimer) {
+      window.clearInterval(pollTimer);
+      pollTimer = null;
+    }
+  }
+
+  function startPolling() {
+    if (pollTimer) {
+      return;
+    }
+    fetchSummary();
+    pollTimer = window.setInterval(fetchSummary, 15000);
+  }
+
+  function markPluginReady() {
+    pluginReady = true;
+    if (offlineTimer) {
+      window.clearTimeout(offlineTimer);
+      offlineTimer = null;
+    }
+    startPolling();
+  }
+
+  window.addEventListener('online-monitor:registered', function() {
+    markPluginReady();
+  });
+
+  setConnectionState('connecting');
+  if (window.__onlineMonitorClient) {
+    markPluginReady();
+  } else {
+    offlineTimer = window.setTimeout(function() {
+      if (!pluginReady) {
+        setConnectionState('offline');
+      }
+    }, 4500);
+  }
+})();
+</script>
+
 <th:block th:if="${theme.config.footer != null && ((theme.config.footer.privacyConfig != null && theme.config.footer.privacyConfig.showPrivacy == true) || (theme.config.footer.termsConfig != null && theme.config.footer.termsConfig.showTerms == true))}">
-  <div id="legalModal" class="legal-modal" onclick="if(event.target === this) closeLegalModal()">
+  <div id="legalModal" class="legal-modal" onclick="if (event.target === this) closeLegalModal()">
     <div class="legal-modal-content">
-      <button class="legal-modal-close" onclick="closeLegalModal()" aria-label="关闭">&times;</button>
+      <button class="legal-modal-close" onclick="closeLegalModal()" aria-label="关闭弹窗">&times;</button>
       <div id="legalModalBody" class="legal-modal-body markdown-content" data-lenis-prevent>
-        内容
+        正在加载内容...
       </div>
     </div>
   </div>
 
-  <div id="privacyContent" style="display:none;" th:if="${theme.config.footer.privacyConfig != null && theme.config.footer.privacyConfig.privacyContent != null && !#strings.isEmpty(theme.config.footer.privacyConfig.privacyContent)}" th:text="${theme.config.footer.privacyConfig.privacyContent}"></div>
+  <div id="privacyContent"
+       style="display:none;"
+       th:if="${theme.config.footer.privacyConfig != null && theme.config.footer.privacyConfig.privacyContent != null && !#strings.isEmpty(theme.config.footer.privacyConfig.privacyContent)}"
+       th:text="${theme.config.footer.privacyConfig.privacyContent}"></div>
 
-  <div id="termsContent" style="display:none;" th:if="${theme.config.footer.termsConfig != null && theme.config.footer.termsConfig.termsContent != null && !#strings.isEmpty(theme.config.footer.termsConfig.termsContent)}" th:text="${theme.config.footer.termsConfig.termsContent}"></div>
+  <div id="termsContent"
+       style="display:none;"
+       th:if="${theme.config.footer.termsConfig != null && theme.config.footer.termsConfig.termsContent != null && !#strings.isEmpty(theme.config.footer.termsConfig.termsContent)}"
+       th:text="${theme.config.footer.termsConfig.termsContent}"></div>
 
   <script th:src="@{/assets/js/marked.min.js}"></script>
   <script>
@@ -176,36 +352,41 @@
     var modal = document.getElementById('legalModal');
     var body = document.getElementById('legalModalBody');
     var content = '';
-    
+
     if (type === 'privacy') {
-      var el = document.getElementById('privacyContent');
-      content = el ? el.textContent : '暂无隐私政策内容,请在后台设置。';
+      var privacyEl = document.getElementById('privacyContent');
+      content = privacyEl ? privacyEl.textContent : '暂未提供隐私协议内容。';
     } else if (type === 'terms') {
-      var el = document.getElementById('termsContent');
-      content = el ? el.textContent : '暂无服务条款内容，请在后台设置。';
+      var termsEl = document.getElementById('termsContent');
+      content = termsEl ? termsEl.textContent : '暂未提供服务条款内容。';
     }
-    
+
     if (typeof marked !== 'undefined' && content) {
       body.innerHTML = marked.parse(content);
     } else {
-      body.innerHTML = '<p>' + (content || '内容加载失败') + '</p>';
+      body.innerHTML = '<p>' + (content || '暂无可展示内容。') + '</p>';
     }
-    
+
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
 
   function closeLegalModal() {
     var modal = document.getElementById('legalModal');
+    if (!modal) return;
     modal.classList.remove('active');
     document.body.style.overflow = '';
   }
 
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeLegalModal();
+    if (e.key === 'Escape') {
+      closeLegalModal();
+    }
   });
   </script>
 </th:block>
 
-<link th:if="${theme.config.footer != null && ((theme.config.footer.privacyConfig != null && theme.config.footer.privacyConfig.showPrivacy == true) || (theme.config.footer.termsConfig != null && theme.config.footer.termsConfig.showTerms == true))}" rel="stylesheet" th:href="@{/assets/css/legal-modal.css}" />
+<link th:if="${theme.config.footer != null && ((theme.config.footer.privacyConfig != null && theme.config.footer.privacyConfig.showPrivacy == true) || (theme.config.footer.termsConfig != null && theme.config.footer.termsConfig.showTerms == true))}"
+      rel="stylesheet"
+      th:href="@{/assets/css/legal-modal.css}" />
 </th:block>
