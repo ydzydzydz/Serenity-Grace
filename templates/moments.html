@@ -13,7 +13,7 @@
 <th:block th:fragment="content">
   <main class="main">
     <div class="container">
-      <section class="moments-page" th:with="momentsResult = ${momentFinder != null ? momentFinder.list(1, 50) : null}">
+      <section class="moments-page" th:with="momentsResult = ${momentFinder != null ? momentFinder.list(1, 9999) : null}">
         
         <div class="moments-header" data-aos="fade-up">
           <h1 class="moments-title" th:text="${(theme.config.watermark?.moments?.enabled == true ? theme.config.watermark.moments.title : null) ?: (singlePage != null ? singlePage.spec.title : '碎碎念')}">碎碎念</h1>
@@ -115,7 +115,7 @@
             </div>
             
             <!-- 分页 -->
-            <div class="moments-pagination" th:if="${momentsResult.totalPages > 1}" data-aos="fade-up">
+            <div class="moments-pagination" th:if="${false}" data-aos="fade-up">
               <span class="pagination-info" th:text="|第 ${momentsResult.page} 页 / 共 ${momentsResult.totalPages} 页|">分页信息</span>
             </div>
             
