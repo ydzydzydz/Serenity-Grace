@@ -61,6 +61,10 @@ spec:
         description: 我的装备
         screenshot: 
         file: equipments.html
+      - name: douban
+        description: 豆瓣
+        screenshot: 
+        file: douban.html
     post:
       - name: default
         description: 默认文章
